@@ -101,6 +101,8 @@
 	<body style="background-color: black;">
 		<script>
 			window.scrollTo(0,0);
+			// Android: 默认 userId = 1（跳过 PHP 登录）
+			if (typeof userId !== 'undefined') userId = 1;
 			// Android 优化：替换 ResLoad.resourceLoader 让它立即完成回调
 			// 否则 image/sys 250 个资源 404 会让 preResLoad 卡死
 			var _overrideResLoad = function() {

@@ -108,41 +108,91 @@ $.getJN=function(url,obj,callBack,id){
 	});
 }
 
-// 路由表：URL → SgBridge 方法
+// Android 路由表：54 个 endpoint 都映射到 SgBridge 或返回 mock
 function routeToSgBridge(url, obj) {
-	// 战斗
-	if(url.match(/sgg\/i\/fight\/(f|s)\.php/)) {
+	// 战斗（核心）
+	if(url.match(/sgg\/i\/fight\/f\.php/)) {
 		var formation = obj.field || obj.formation || '0,0,0|0,0,0|0,0,0';
 		var sysIds = obj.sys || obj.sys_ids || '0,0,0|0,0,0|0,0,0';
-		return $.parseJSON(SgBridge.battleFight(formation, sysIds));
+		var raw = SgBridge.battleFight(formation, sysIds);
+		var data = JSON.parse(raw);
+		data.st = 0;
+		data.result = data.winner;
+		data.next = null;
+		try { data.user = JSON.parse(SgBridge.userGetInfo()); } catch(e) {}
+		return data;
+	}
+	if(url.match(/sgg\/i\/fight\/(s|t)\.php/)) {
+		var formation = obj.field || obj.formation || '0,0,0|0,0,0|0,0,0';
+		var sysIds = obj.sys || obj.sys_ids || '0,0,0|0,0,0|0,0,0';
+		return JSON.parse(SgBridge.battleFight(formation, sysIds));
 	}
 	// 用户
-	if(url.match(/sgg\/i\/user\/(z|u|get|info)\.php/)) {
+	if(url.match(/sgg\/i\/user\/(z|u|get|info|c|g)\.php/)) {
 		return $.parseJSON(SgBridge.userGetInfo());
 	}
+	if(url.match(/sgg\/i\/user\/r\.php/)) {
+		return {ok: true, st: 0};  // 注册接口跳过
+	}
 	// 武将
-	if(url.match(/sgg\/i\/npc\/list\.php/)) {
-		return {npcs: $.parseJSON(SgBridge.npcList())};
+	if(url.match(/sgg\/i\/npc\//)) {
+		var list = $.parseJSON(SgBridge.npcList());
+		if(url.match(/sgg\/i\/npc\/list\.php/)) return {npcs: list};
+		if(url.match(/sgg\/i\/npc\/w\.php/)) return {wj: list};
+		if(url.match(/sgg\/i\/npc\/z\.php/)) return {npcList: list};
+		if(url.match(/sgg\/i\/npc\/z1\.php/)) return {list: list};
+		if(url.match(/sgg\/i\/npc\/h\.php/)) return {npc: list[0] || {}};
+		return {list: list};
 	}
 	// 装备
-	if(url.match(/sgg\/i\/equip\/list\.php/)) {
-		return {equips: $.parseJSON(SgBridge.equipList())};
+	if(url.match(/sgg\/i\/equip\//)) {
+		var list = $.parseJSON(SgBridge.equipList());
+		if(url.match(/sgg\/i\/equip\/list\.php/)) return {equips: list};
+		return {list: list};
+	}
+	// 道具
+	if(url.match(/sgg\/i\/bag\//)) {
+		return {list: [], count: 0};
 	}
 	// 任务
-	if(url.match(/sgg\/i\/task\/list\.php/)) {
-		return {tasks: $.parseJSON(SgBridge.taskList())};
-	}
-	if(url.match(/sgg\/i\/task\/complete\.php/)) {
-		SgBridge.taskComplete(parseInt(obj.task_id || obj.id));
-		return {ok:true};
+	if(url.match(/sgg\/i\/task\/(t|complete)\.php/)) {
+		if(url.match(/complete/)) {
+			SgBridge.taskComplete(parseInt(obj.task_id || obj.id));
+			return {ok: true, rt: 1};
+		}
+		return {tasks: $.parseJSON(SgBridge.taskList()), list: $.parseJSON(SgBridge.taskList())};
 	}
 	// 强化
-	if(url.match(/sgg\/i\/qianghua\//)) {
+	if(url.match(/sgg\/i\/qianghua\/q\.php/)) {
 		var cost = SgBridge.qianghuaCalc(parseInt(obj.level||0), parseInt(obj.type||1));
-		return {cost: cost, ok: true};
+		return {cost: cost, gold: cost, ok: true};
 	}
-	// 默认：返回空成功
-	return {ok: true};
+	if(url.match(/sgg\/i\/qianghua\/s\.php/)) {
+		var ok = SgBridge.equipUpgrade(parseInt(obj.nid||0), parseInt(obj.type||1), parseInt(obj.gold||0));
+		return {ok: ok, rt: ok ? 1 : 2};
+	}
+	// 阵型
+	if(url.match(/sgg\/i\/form\//)) {
+		return {formation: '2 0 0|0 0 0|0 0 0', info: {}};
+	}
+	// 合成 / 觉醒 / 将魂 / 强化 / 摇钱树 / 镶嵌 / 拜师 / 充值
+	if(url.match(/sgg\/i\/(hecheng|juhun|raising|yaoqianshu|xiangqian|xl|charge|chat|communicate)\//)) {
+		return {ok: true, rt: 1, list: [], info: {}};
+	}
+	// 公共 / VIP
+	if(url.match(/sgg\/i\/common\//)) {
+		return {vip: 0, maxTL: 100, ok: true};
+	}
+	// 顶部 (排行榜)
+	if(url.match(/sgg\/i\/top\//)) {
+		return {list: [], rt: 1, ok: true};
+	}
+	// 体力
+	if(url.match(/sgg\/i\/tili\//)) {
+		return {nowTL: 99, maxTL: 100, nextTime: 0, ok: true};
+	}
+	// 默认：返回 ok:true（让 UI 不报错）
+	return {ok: true, rt: 1, list: [], map: []};
 }
 function showLoading(param){
 	if(!param.hasData){

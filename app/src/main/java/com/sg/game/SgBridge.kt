@@ -54,7 +54,17 @@ class SgBridge(context: Context) {
     @JavascriptInterface
     fun userGetInfo(): String {
         return try {
-            UserManager.getPlayerInfo(ctx)
+            val raw = UserManager.getPlayerInfo(ctx)
+            // 解析并补充 user.js 需要的字段（yb/vipLevel/img/formation）
+            val obj = org.json.JSONObject(raw)
+            obj.put("yb", 1000)        // 元宝
+            obj.put("yb_total", 5000)
+            obj.put("vipLevel", 0)
+            obj.put("img", "1")
+            obj.put("reputation", 100)
+            obj.put("cbattle", "1 1 1 1 1 1 1 1 1")
+            obj.put("id", 1)
+            return obj.toString()
         } catch (e: Exception) {
             "{\"error\":\"${e.message}\"}"
         }
