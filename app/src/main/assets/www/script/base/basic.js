@@ -570,17 +570,19 @@ ResLoad={
 		var re = res[ResLoad.index];
 		var img = new Image();
 		img.src = re;
-		img.addEventListener("load",function(){
-		//$(document).load(re,function(){
+		// Android 修复：404 也要推进，否则永远卡住
+		var onDone = function(){
 			if(ResLoad.animate(length,ResLoad.index+1)){
 				ResLoad.index++;
-				ResLoad.load(res,callback);  //通过递归实现图片或者脚本逐个加载
+				ResLoad.load(res,callback);
 			}else{
 				if(callback){
 					callback();
-				}	
+				}
 			}
-		});
+		};
+		img.addEventListener("load", onDone);
+		img.addEventListener("error", onDone);  // Android: 404 也前进
 
 	},
 	animate:function(length,progress){	
