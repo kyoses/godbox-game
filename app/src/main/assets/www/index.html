@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>三国霸业 · 离线版 v2</title>
+<style>
+  body{margin:0;padding:0;background:linear-gradient(135deg,#3a0000 0%,#1a0000 50%,#000 100%);
+    color:#d4af37;font-family:"STKaiti","KaiTi",serif;min-height:100vh;display:flex;
+    flex-direction:column;align-items:center;padding:20px;}
+  h1{font-size:36px;margin:20px 0 12px;text-shadow:2px 2px 6px #000;letter-spacing:6px;}
+  .sub{font-size:14px;color:#aaa;margin-bottom:24px;}
+  .info{background:rgba(0,0,0,.55);border:2px solid #d4af37;border-radius:8px;
+    padding:16px;max-width:520px;line-height:1.7;font-size:13px;margin-bottom:16px;width:90%;}
+  .panel{background:rgba(40,0,0,.5);border:1px solid #d4af37;border-radius:6px;
+    padding:14px;margin:8px 0;width:90%;max-width:520px;}
+  .btn{display:block;margin:8px 0;padding:12px;background:#8b0000;color:#fff;
+    border:1px solid #d4af37;border-radius:4px;font-size:15px;cursor:pointer;
+    font-family:inherit;width:100%;}
+  .btn:hover{background:#a00;}
+  .log{font-size:11px;color:#aaa;margin-top:8px;font-family:monospace;
+    max-height:140px;overflow-y:auto;background:#000;padding:8px;border-radius:4px;}
+  pre{font-size:11px;color:#5f5;margin:0;white-space:pre-wrap;word-break:break-all;}
+  .ok{color:#5f5;}.err{color:#f55;}
+</style>
+</head>
+<body>
+  <h1>三国霸业</h1>
+  <div class="sub">离线版 v2 · 战斗引擎 Kotlin 化</div>
+
+  <div class="info">
+    <b>核心功能已迁移到 Android 原生 Kotlin：</b><br>
+    ✅ 战斗引擎（Fight → BattleEngine.kt）<br>
+    ✅ 装备强化（Qianghua → Qianghua.kt）<br>
+    ✅ 用户/武将/装备/任务数据持久化（SQLite）<br>
+    ✅ 公式 DSL（formulaValue → Formula.kt + exp4j）<br><br>
+    <b>通过 SgBridge JS 接口调用</b>
+  </div>
+
+  <div class="panel">
+    <b>🎯 战斗演示</b>
+    <button class="btn" onclick="testBattle()">发起战斗（关羽 vs 曹操）</button>
+    <div class="log" id="log1"><pre>等待测试...</pre></div>
+  </div>
+
+  <div class="panel">
+    <b>👤 用户信息</b>
+    <button class="btn" onclick="testUser()">获取玩家信息</button>
+    <div class="log" id="log2"><pre>等待测试...</pre></div>
+  </div>
+
+  <div class="panel">
+    <b>⚔ 武将列表</b>
+    <button class="btn" onclick="testNpc()">查询武将列表</button>
+    <button class="btn" onclick="testNpcAdd(3)">招募张飞 (id=3)</button>
+    <div class="log" id="log3"><pre>等待测试...</pre></div>
+  </div>
+
+  <div class="panel">
+    <b>🛡 装备</b>
+    <button class="btn" onclick="testEquipAdd(1)">获得 青锋剑</button>
+    <button class="btn" onclick="testUpgrade()">升级第一件装备 (type=1)</button>
+    <div class="log" id="log4"><pre>等待测试...</pre></div>
+  </div>
+
+  <div class="panel">
+    <b>📋 任务</b>
+    <button class="btn" onclick="testTask()">查看任务列表</button>
+    <button class="btn" onclick="testTaskComplete(1)">完成任务 1</button>
+    <div class="log" id="log5"><pre>等待测试...</pre></div>
+  </div>
+
+  <div class="panel">
+    <b>🧮 公式 DSL</b>
+    <button class="btn" onclick="testFormula()">计算强化费用 (level=10, type=1)</button>
+    <div class="log" id="log6"><pre>等待测试...</pre></div>
+  </div>
+
+  <script>
+    function log(id, msg, ok) {
+      var el = document.getElementById(id);
+      el.innerHTML = '<pre class="' + (ok ? 'ok' : 'err') + '">' + msg + '</pre>';
+    }
+    function safe(fn) {
+      try { return fn(); } catch(e) { return 'error: ' + e.message; }
+    }
+    function testBattle() {
+      // 玩家阵型：关羽(id=2)放中军；敌方：曹操(id=1)在前
+      var r = SgBridge.battleFight('0 2 0|0 0 0|0 0 0', '1 0 0|0 0 0|0 0 0');
+      log('log1', r, r.indexOf('winner') >= 0);
+    }
+    function testUser() {
+      var r = SgBridge.userGetInfo();
+      log('log2', r, r.indexOf('name') >= 0);
+    }
+    function testNpc() {
+      var r = SgBridge.npcList();
+      log('log3', r, true);
+    }
+    function testNpcAdd(id) {
+      var r = SgBridge.npcAdd(id);
+      log('log3', '添加结果: ' + r + '\n' + SgBridge.npcList(), r);
+    }
+    function testEquipAdd(id) {
+      var r = SgBridge.equipAdd(id);
+      log('log4', '添加装备结果: ' + r + '\n' + SgBridge.equipList(), r);
+    }
+    function testUpgrade() {
+      // 假设数据库中有 id=1 的装备 (up_level=0, type=1)
+      var gold = 5000;
+      var r = SgBridge.equipUpgrade(1, 1, gold);
+      log('log4', '强化结果: ' + r, r);
+    }
+    function testTask() {
+      var r = SgBridge.taskList();
+      log('log5', r, r.indexOf('task_id') >= 0);
+    }
+    function testTaskComplete(id) {
+      SgBridge.taskComplete(id);
+      log('log5', '完成任务 ' + id + '\n' + SgBridge.taskList(), true);
+    }
+    function testFormula() {
+      var r = SgBridge.qianghuaCalc(10, 1);
+      log('log6', 'level=10, type=1 强化费用: ' + r + ' 金币\n' + '公式: pow(10,3.25)/30 + 10*5 = 707, *70 + 100 = ' + Math.round((Math.pow(10, 3.25)/30 + 50) * 70) + 100, true);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">三国霸业</string>
+    <string name="loading">加载中…</string>
+    <string name="settings">服务器设置</string>
+    <string name="server_url">后端服务器地址</string>
+    <string name="server_hint">例如：http://192.168.1.10:8080</string>
+    <string name="save">保存</string>
+    <string name="use_local">使用本地资源</string>
+    <string name="reload">刷新</string>
+    <string name="back">返回</string>
+</resources>

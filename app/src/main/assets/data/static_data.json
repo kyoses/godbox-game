@@ -1,0 +1,41 @@
+{
+  "s_npc": [
+    {"id": 1, "name": "曹操", "img": "caocao", "phy_att": 95, "mag_att": 75, "phy_def": 80, "mag_def": 70, "strength": 95, "intelligence": 90, "speed": 85, "crit": 60, "crit_def": 50, "class": 1, "img_small": "caocao_s"},
+    {"id": 2, "name": "关羽", "img": "guanyu", "phy_att": 100, "mag_att": 60, "phy_def": 90, "mag_def": 75, "strength": 98, "intelligence": 75, "speed": 90, "crit": 70, "crit_def": 60, "class": 1, "img_small": "guanyu_s"},
+    {"id": 3, "name": "张飞", "img": "zhangfei", "phy_att": 98, "mag_att": 50, "phy_def": 95, "mag_def": 60, "strength": 95, "intelligence": 50, "speed": 80, "crit": 60, "crit_def": 50, "class": 1, "img_small": "zhangfei_s"},
+    {"id": 4, "name": "赵云", "img": "zhaoyun", "phy_att": 95, "mag_att": 70, "phy_def": 88, "mag_def": 80, "strength": 95, "intelligence": 80, "speed": 95, "crit": 65, "crit_def": 55, "class": 1, "img_small": "zhaoyun_s"},
+    {"id": 5, "name": "诸葛亮", "img": "zhuge", "phy_att": 40, "mag_att": 100, "phy_def": 50, "mag_def": 95, "strength": 50, "intelligence": 100, "speed": 70, "crit": 80, "crit_def": 70, "class": 2, "img_small": "zhuge_s"},
+    {"id": 6, "name": "刘备", "img": "liubei", "phy_att": 78, "mag_att": 80, "phy_def": 75, "mag_def": 80, "strength": 80, "intelligence": 85, "speed": 80, "crit": 50, "crit_def": 50, "class": 1, "img_small": "liubei_s"},
+    {"id": 7, "name": "孙权", "img": "sunquan", "phy_att": 80, "mag_att": 85, "phy_def": 78, "mag_def": 80, "strength": 85, "intelligence": 88, "speed": 80, "crit": 55, "crit_def": 55, "class": 1, "img_small": "sunquan_s"},
+    {"id": 8, "name": "周瑜", "img": "zhouyu", "phy_att": 85, "mag_att": 95, "phy_def": 75, "mag_def": 90, "strength": 85, "intelligence": 95, "speed": 90, "crit": 70, "crit_def": 60, "class": 2, "img_small": "zhouyu_s"}
+  ],
+  "s_equip": [
+    {"id": 1, "name": "青锋剑", "type": 1, "phy_att": 25, "mag_att": 0, "phy_def": 0, "mag_def": 0, "strength": 5, "intelligence": 0, "class": 1, "take_level": 1, "img": "jian1"},
+    {"id": 2, "name": "白银甲", "type": 2, "phy_att": 0, "mag_att": 0, "phy_def": 30, "mag_def": 20, "strength": 0, "intelligence": 0, "class": 1, "take_level": 1, "img": "jia1"},
+    {"id": 3, "name": "龙鳞盔", "type": 3, "phy_att": 0, "mag_att": 0, "phy_def": 20, "mag_def": 15, "strength": 3, "intelligence": 0, "class": 1, "take_level": 1, "img": "kui1"},
+    {"id": 4, "name": "飞云履", "type": 4, "phy_att": 5, "mag_att": 0, "phy_def": 15, "mag_def": 10, "strength": 3, "intelligence": 0, "class": 1, "take_level": 1, "img": "xie1"},
+    {"id": 5, "name": "方天画戟", "type": 1, "phy_att": 80, "mag_att": 0, "phy_def": 0, "mag_def": 0, "strength": 30, "intelligence": 0, "class": 1, "take_level": 30, "img": "jian3"},
+    {"id": 6, "name": "青龙偃月刀", "type": 1, "phy_att": 100, "mag_att": 0, "phy_def": 0, "mag_def": 0, "strength": 50, "intelligence": 0, "class": 1, "take_level": 50, "img": "jian5"}
+  ],
+  "s_prop": [
+    {"id": 1, "name": "金疮药", "type": 1, "effect_type": "hp", "effect_value": 100},
+    {"id": 2, "name": "经验丹", "type": 2, "effect_type": "exp", "effect_value": 50},
+    {"id": 3, "name": "金票", "type": 3, "effect_type": "gold", "effect_value": 1000},
+    {"id": 4, "name": "绿魂", "type": 4, "effect_type": "soul", "effect_value": 1},
+    {"id": 5, "name": "蓝魂", "type": 4, "effect_type": "soul", "effect_value": 2}
+  ],
+  "s_battle": [
+    {"id": 1, "name": "第一章·桃园结义", "map_id": 1, "type": 1, "disp_order": 1, "sys_formation": "2 0 0|0 0 0|0 0 0", "sys_formation_extra": ""},
+    {"id": 2, "name": "第二章·怒鞭督邮", "map_id": 1, "type": 1, "disp_order": 2, "sys_formation": "2 0 0|0 3 0|0 0 0", "sys_formation_extra": ""},
+    {"id": 3, "name": "第三章·三英战吕布", "map_id": 1, "type": 1, "disp_order": 3, "sys_formation": "3 0 0|0 0 0|0 2 4", "sys_formation_extra": ""},
+    {"id": 4, "name": "第四章·连营之计", "map_id": 1, "type": 1, "disp_order": 4, "sys_formation": "5 0 0|0 3 0|0 0 4", "sys_formation_extra": ""},
+    {"id": 5, "name": "第五章·三顾茅庐", "map_id": 1, "type": 1, "disp_order": 5, "sys_formation": "5 0 0|0 4 0|0 0 4", "sys_formation_extra": ""}
+  ],
+  "s_task": [
+    {"id": 1, "title": "初出茅庐", "desc": "完成第一场战斗", "reward_gold": 100, "reward_exp": 50},
+    {"id": 2, "title": "装备强化", "desc": "强化一次装备", "reward_gold": 200, "reward_prop": 1},
+    {"id": 3, "title": "招募武将", "desc": "招募一名新武将", "reward_gold": 500, "reward_prop": 4},
+    {"id": 4, "title": "推图第二章", "desc": "通关第二章", "reward_gold": 300, "reward_exp": 100},
+    {"id": 5, "title": "勇闯三英战", "desc": "通关第三章", "reward_gold": 1000, "reward_prop": 5}
+  ]
+}

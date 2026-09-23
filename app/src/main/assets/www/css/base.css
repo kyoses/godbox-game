@@ -1,0 +1,115 @@
+/* CSS reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0}
+img{border:0}
+input,textarea{background:none}
+textarea{ border:none;resize: none}
+ol,ul{list-style:none}
+em{font-style:normal}
+fieldset{ border:none}
+/*文字排版*/
+.fs16{font-size:16px}
+.fs18{font-size:18px}
+.fs20{font-size:20px}
+.fs22{font-size:22px}
+.fs24{font-size:24px}
+.fs26{font-size:26px}
+.fs28{font-size:28px}
+.fs30{font-size:30px}
+.fs36{font-size:36px}
+.fb{font-weight:bold}
+.cor1{color:#ff0000}
+.cor2{color:#fdb516}
+.cor3{color:#543516}
+.cor4{color:#715836}
+.cor5{color:#07ca23}
+.cor55{color:#fff}
+.cor60{color:#ff7800}
+.cor62{color:#fffc00}
+.cor63{color:#ffce02}
+.cor67{color:#ffbe00}
+.cor82{color:#00ff36}
+.cor95{color:#fbcf01}
+.cor96{color:#85d5ff}
+.cor97{color:#76655a !important}
+.cor98{color:#fff098}
+.cor99{color:#00ff96}
+.cor100{color:#00fffc}
+.cor101{color:#00b4ff}
+.cor102{color:#a2ff00}
+.cor103{color:#ff7e00}
+.cor104{color:#ffe897}
+.cor105{color:#ffda3e}
+.cor106{color:#ffb400}
+.cor107{color:#fcff00}
+.cor108{color:#2cf90a}
+.cor109{color:#00ff30}
+.cor110{color:#fffe00}
+.cor111{color:#fff70c}
+.cor112{color:#00ff12}
+.stro2{text-shadow:2px 0 0 #000,0 2px 0 #000,-2px 0 0 #000,0 -2px 0 #000}
+.stro3{text-shadow:2px 0 0 #241913,0 2px 0 #241913,-2px 0 0 #241913,0 -2px 0 #241913}
+.stro8{color:#00baff;text-shadow:-2px 0 0 #0030ff,0 -2px 0 #0030ff,2px 0 0 #0030ff,0 2px 0 #0030ff}
+.stro11{text-shadow:2px 0 0 #0987ae,0 2px 0 #0987ae,-2px 0 0 #0987ae,0 -2px 0 #0987ae}
+.stro12{text-shadow:2px 0 0 #2d1e19,0 2px 0 #2d1e19,-2px 0 0 #2d1e19,0 -2px 0 #2d1e19}
+.stro13{text-shadow:2px 0 0 #4c1300,0 2px 0 #4c1300,-2px 0 0 #4c1300,0 -2px 0 #4c1300}
+.stro14{text-shadow:-2px 0 0 #0220fd,0 -2px 0 #0220fd,2px 0 0 #0220fd,0 2px 0 #0220fd; color:#00baff}
+.stro15{text-shadow:-2px 0 0 #767676,0 -2px 0 #767676,2px 0 0 #767676,0 2px 0 #767676; color:#fff}
+.stro16{text-shadow:-2px 0 0 #009218,0 -2px 0 #009218,2px 0 0 #009218,0 2px 0 #009218; color:#0cff00}
+.stro17{text-shadow:-2px 0 0 #6c02fd,0 -2px 0 #6c02fd,2px 0 0 #6c02fd,0 2px 0 #6c02fd; color:#ff00fc}
+.stro18{text-shadow:-2px 0 0 #be5000,0 -2px 0 #be5000,2px 0 0 #be5000,0 2px 0 #be5000; color:#fff600}
+.stro19{text-shadow:-2px 0 0 #6f2000,0 -2px 0 #6f2000,2px 0 0 #6f2000,0 2px 0 #6f2000; color:#ff3434}
+.stro20{text-shadow:-2px 0 0 #bd4e07,0 -2px 0 #bd4e07,2px 0 0 #bd4e07,0 2px 0 #bd4e07; color:#fff}
+.stro21{text-shadow:-2px 0 0 #0f1769,0 -2px 0 #0f1769,2px 0 0 #0f1769,0 2px 0 #0f1769; color:#d2d0fc}
+.stro22{text-shadow:-2px 0 0 #2c0352,0 -2px 0 #2c0352,2px 0 0 #2c0352,0 2px 0 #2c0352; color:#f2d0fc}
+.stro23{text-shadow:-2px 0 0 #022d02,0 -2px 0 #022d02,2px 0 0 #022d02,0 2px 0 #022d02; color:#d3fcd0}
+.stro24{text-shadow:-2px 0 0 #08760a,0 -2px 0 #08760a,2px 0 0 #08760a,0 2px 0 #08760a; color:#0ffd03}
+.stro25{text-shadow:-2px 0 0 #962f02,0 -2px 0 #962f02,2px 0 0 #962f02,0 2px 0 #962f02;color:#fff}
+.stro26{text-shadow:-2px 0 0 #76341f,0 -2px 0 #76341f,2px 0 0 #76341f,0 2px 0 #76341f;color:#fec521}
+.shad1{text-shadow:1px 1px 1px #000}
+/*定位*/
+.fl{float:left}
+.fr{float:right}
+.tc{text-align:center}
+.tr{text-align:right}
+.tl{text-align:left}
+.ma{margin:0 auto}
+.pab{position:absolute}
+.pre{position:relative}
+.none{display:none}
+.clear{clear:both}
+.ls1{letter-spacing:-1px}
+/*边距*/
+.ml0{margin-left:0}
+.ml10{margin-left:10px}
+.ml25{margin-left:-13px}
+.ml30{margin-left:-30px}
+.ml33{margin-left:33px}
+.ml52{margin-left:52px}
+.mb12{margin-bottom:12px}
+.mb5{margin-bottom:5px}
+.mt7{margin-top:7px}
+.mt4{margin-top:4px}
+.mt5{margin-top:-5px}
+.mt10{margin-top:10px}
+.mt15{margin-top:16px}
+.mt30{margin-top:30px}
+.mt50{margin-top:50px}
+.mt60{margin-top:60px}
+.mt80{margin-top:80px}
+.mt83{margin-top:83px}
+.mt25{margin-top:25px}
+.mt200{margin-top:200px}
+.mt67{margin-top:67px}
+.pt10{ padding-top:10px !important}
+/*宽度*/
+.w191{width:191px}
+.w165{width:165px}
+.w460{width:460px}
+.w440{width:440px}
+.h200{height:200px}
+/*圆角*/
+.bors5{border-radius:5px}
+.bors10{border-radius:10px}
+.bors15{border-radius:15px}
+/*边框*/
+.bord{border:2px solid #c48a4e}
