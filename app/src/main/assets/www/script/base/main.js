@@ -42,9 +42,9 @@ var mainPage={
 		setTimeout(mainPage.playAnimation,nextFrameTime,id,array,++index,infinite,callBack,args);
 	},
 	//预加载的图片
-	preResLoad:function(){	
-		var staticRes=[
-			'image/sys/arroL.png',
+	preResLoad:function(){
+		// Android 优化：image/sys 资源不打包，预加载列表清空直接跳过
+		var staticRes=[];
 			'image/sys/arrow1.png',
 			'image/sys/arrowL.png',
 			'image/sys/back.png',

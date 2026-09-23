@@ -101,6 +101,26 @@
 	<body style="background-color: black;">
 		<script>
 			window.scrollTo(0,0);
+			// Android 优化：替换 ResLoad.resourceLoader 让它立即完成回调
+			// 否则 image/sys 250 个资源 404 会让 preResLoad 卡死
+			var _overrideResLoad = function() {
+				var orig = (typeof ResLoad !== 'undefined') ? ResLoad.resourceLoader : null;
+				if (orig && typeof ResLoad !== 'undefined') {
+					ResLoad.resourceLoader = function(res, callback, se2) {
+						// 跳过资源加载，2 秒后调回调（让 UI 有时间渲染）
+						setTimeout(function() {
+							if (typeof ResLoad.info_run !== 'undefined' && ResLoad.info_run) clearInterval(ResLoad.info_run);
+							if (typeof ResLoad.wait_run !== 'undefined' && ResLoad.wait_run) clearTimeout(ResLoad.wait_run);
+							try { $('#myloading,#myloading2').remove(); } catch(e) {}
+							ResLoad.index = 0;
+							ResLoad.se2 = 0;
+							if (callback) callback();
+						}, 1500);
+					};
+				}
+			};
+			// 等 basic.js 加载完再执行
+			setTimeout(_overrideResLoad, 100);
 			mainPage.preResLoad();
 			var acc_id = 0;
 			var acc_type = "";  
