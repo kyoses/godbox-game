@@ -1,0 +1,1541 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width"/>
+		<meta name="viewport" content="target-densitydpi=device-dpi,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="max-age=7200" />
+		<meta name="apple-touch-fullscreen" content="yes"/>
+        <title>回到三国当老大</title>
+        <link href="css/public.css" type="text/css" rel="stylesheet" />
+        <link href="css/other.css" type="text/css" rel="stylesheet" />
+        <link href="css/base.css" type="text/css" rel="stylesheet" />
+   
+		<script>
+			var maxCutTop=120;
+			var maxCutHeight=20;
+			var cutTop=0;
+			var minHeight=768-maxCutTop-maxCutHeight;
+			if(window.innerWidth>window.innerHeight){
+				var width=window.innerWidth;
+				var height=window.innerHeight;
+			}
+			else{
+				var width=window.innerWidth;
+				var height=window.innerHeight;
+			}
+			if(width!=1024){
+				document.write('<meta name="viewport" content="width=1024"/>');
+			}
+			if(height>=768){
+				bodyHeight=768;
+			}
+			else{
+				bodyHeight=height;
+			}
+			if(bodyHeight<minHeight){
+				bodyHeight=minHeight;
+			}
+			if(bodyHeight<768){
+				cutTop=768-bodyHeight;
+				if(cutTop>maxCutTop){
+					cutTop=maxCutTop;
+				}
+		 
+				var chatTop=Math.floor(665/768*bodyHeight);
+				var navTop=Math.floor(673/768*bodyHeight);
+				var ficonTop=Math.floor(445-cutTop);
+				var jiconTop=Math.floor(375-cutTop);
+			}
+
+ addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);  
+      function hideURLbar(){  
+                window.scrollTo(0,1);  
+      }  
+			
+		</script>
+		<script type="text/javascript" src="script/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="script/lib/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="script/tool/mesWindow.js"></script>
+		<script type="text/javascript" src="script/base/basic.js"></script>
+		<script type="text/javascript" src="script/base/main.js"></script>
+		<script type="text/javascript" src="script/tool/slider.js"></script>
+		<script type="text/javascript" src="script/tool/SE.js"></script>
+		<script type="text/javascript" src="script/base/user.js"></script>
+		<script type="text/javascript" src="script/base/buzhen.js"></script>
+		<script type="text/javascript" src="script/base/hecheng.js"></script>
+		<script type="text/javascript" src="script/base/map.js"></script>
+		<script type="text/javascript" src="script/base/battle.js"></script>
+		<script type="text/javascript" src="script/base/qianghua.js"></script>
+		<script type="text/javascript" src="script/base/wujiang.js"></script>
+		<script type="text/javascript" src="script/base/task.js"></script>
+		<script type="text/javascript" src="script/base/yaoqianshu.js"></script>
+		<script type="text/javascript" src="script/base/rihuo.js"></script>
+		<script type="text/javascript" src="script/base/director.js"></script>
+        <script type="text/javascript" src="script/base/elite.js"></script>
+       <script type="text/javascript" src="script/base/announce.js"></script>
+        <script type="text/javascript" src="script/base/activity.js"></script>
+        <script type="text/javascript" src="script/base/zhaomu.js"></script>
+        <script type="text/javascript" src="script/base/charge.js"></script>
+        <script type="text/javascript" src="script/base/raising.js"></script>
+        <script type="text/javascript" src="script/base/juhun.js"></script>
+        <script type="text/javascript" src="script/base/arena.js"></script>
+ 		<script type="text/html" id="loading">
+			<div class="loading" id='myloading'>
+				<div id='loadingInfo' style='display:inline-block;width:750px;font-size:22px;color:white;text-align: center;margin-top:400px;'>欢迎来到回到三国当老大，我们正在拼命的加载中！！！</div>
+				<div class="press">
+					<p class="pressBtn" style='width:0px;'></p>
+					<p class="pressBtn1"></p>
+				</div>
+				<div class='load_num'></div>
+				<div id='myloading2' style='display:none;'>
+					<div class="nPress fs16 cor55">
+						玩命加载中···<span class="fr">0%</span>
+						<p class="nBlood"></p>
+					</div>
+				</div>
+			</div>
+		</script>
+		<a href="index.html" style="position:fixed;top:8px;right:8px;z-index:9999;padding:6px 12px;background:#8b0000;color:#fff;border:2px solid #d4af37;border-radius:4px;text-decoration:none;font-size:13px;">⬅ 返回</a>
+	</head>
+	<body style="background-color: black;">
+		<script>
+			window.scrollTo(0,0);
+			mainPage.preResLoad();
+			var acc_id = 0;
+			var acc_type = "";  
+			var plat_info = "";
+			acc_id = '/* php */';acc_type =2;plat_info ='/* php */';fast_reg ='';			 
+
+		</script>
+	 
+	<div id="wraper" class="indexW pre">
+		<div class="indexH pre">
+			<div id="area_quanbu">
+				<ul class="playerN fs18 tc fl" id="person_info">
+					<li id="userName"></li>
+					<li class="fs16" id="btn_vip"></li>
+				</ul>
+				<ul class="playerLe fs16 fl">
+					<li><strong>等级</strong><var><span id='nowExp'></span></var><em id="userLevel"></em></li>
+					<!--<li></li>-->
+				</ul>
+				<ul class="playerPy pab fs16 fl" id='user_tili'>
+					<li><strong>体力</strong><var><span id='nowTL'></span></var><em id="bt"><span>10</span>/100</em></li>
+					<!--<li></li>
+					<li></li>-->
+				</ul>
+				<p class="playerM"><img src="image/sys/coin.png"/>&thinsp;&thinsp;<span id="jbNum"></span></p>
+				<p class="playerC"><img src="image/sys/gold.png" />&thinsp;&thinsp;<span id='ybNum'>0</span></p>
+				<p class="playerP">声望&thinsp;&thinsp;<span id='userRepu'></span></p>
+			</div>
+			<a class="recharge" id="charge_enter"></a>
+		</div>
+		<div class="indexTt fs18 tc"><span></span><em></em></div>
+		<div class="indexM tc">
+			<div class="sTower"><img id='jingying_icon' src="image/sys/tf.png"></div>
+			<div class="staWare"><img src="image/sys/db.png"></div>
+		</div>
+		<div class="indexC" id="fromNpcList">
+
+		</div>
+		<ul class="indexFo clear" id="main_icon">
+			<li><p class="n_bb" id="btn_wj"></p></li>
+			<li><p class="n_bz" id='btn_jitan'></p></li>
+			<li><p class="n_qh" id="btn_buzhen"></p></li>
+			<li><p class="n_hc" id='btn_duanzao'></p></li>
+			<li><p class="n_rw" id="btn_task"></p></li>
+		</ul>
+	</div>
+	</body>
+	<!--新手页面性别-->
+	<script type="text/html" id="newUser_sex">
+<div class="novS" id="new_sex">
+	<div class="novsM">
+		<div class="novPlayer ma">
+			<div class="sSex" sex="0" simg="image/game/pic35.png"><img src="image/game/pic35.png" /></div>
+			<div class="sSex" sex="1" simg="image/game/pic40.png"><img class="conDirLeft" src="image/game/pic40.png" /></div>
+		</div>
+	</div>
+	</script>
+	<!--新手页面角色名-->
+	<script type="text/html" id="newUser_name">
+<div class="novS" id="new_name">
+	<div class="novsM">
+		<div class="novIp">
+			<div class="wBack" id="newUser_back"></div>
+			<div class="novPer"><img id="newUser_img" src="" /></div>
+			<div class="novInC cor55 fs28">
+				<p class="fl">角色名</p>
+				<input type="text" id="newInput_name" class="fl bors10"/>
+				<p class="sz fl" id="random_name"><img  style="vertical-align:top;" src="image/sys/ysz.png" /><div class="tc"><a class="pub_btn" id="name_sub">确定</a></div>	</p>
+			</div>
+			<p class="clear"></p>
+			<!--div class="tc mt25"><a class="pub_btn" id="name_ok">确定</a></div-->
+		</div>
+		<p class="clear"></p>
+		
+	</div>
+	</script>
+<!----新手对话------>
+	<script type="text/html" id="newUser_ddddd1">
+	<div class="novS" id="new_sex1">
+	<div class="novsM">
+		 <font color="ffffff" size=50>
+			 “嗯？我这是在哪里？”
+		 </font>
+		 <div class="tc"><a class="pub_btn" id="name_subzzz1">下一步</a></div>	
+	</div>
+	</script>
+
+	<script type="text/html" id="newUser_ddddd2">
+	<div class="novS" id="new_sex2">
+	<div class="novsM">
+		 <font color="ffffff" size=50>
+			感觉到四周一片冰冷，而且自己全身酸痛到失去了知觉一般，周围还有寒风刮过，吹到自己身上，忍不住打起寒颤来。
+		 </font>
+		 <div class="tc"><a class="pub_btn" id="name_subzzz2">下一步</a></div>	
+	</div>
+	</script>
+
+
+	<script type="text/html" id="newUser_ddddd3">
+	<div class="novS" id="new_sex3">
+	<div class="novsM">
+		 <font color="ffffff" size=50>
+			晃了晃昏沉沉的头，慢慢睁开眼来，耳朵里传来阵阵厮杀的呼喝，前方一座古城上堆满着攻城士兵，不断有人从城头跌落。
+		 </font>
+		 <div class="tc"><a class="pub_btn" id="name_subzzz3">下一步</a></div>	
+	</div>
+	</script>
+
+ 
+
+		<script type="text/html" id="newUser_ddddd4">
+	<div class="novS" id="new_sex4">
+	<div class="novsM">
+		 <font color="ffffff" size=50>
+			城头正中，赫然写着三个大字“七星关”。
+		 </font>
+		 <div class="tc"><a class="pub_btn" id="name_subzzz4">下一步</a></div>	
+	</div>
+	</script>
+
+	<script type="text/html" id="newUser_ddddd5">
+	<div class="novS" id="new_sex6">
+	<div class="novsM">
+		 <font color="ffffff" size=50>
+			突然一个机灵，“难道，莫非，我这是穿越到三国了？”
+		 </font>
+		 <div class="tc"><a class="pub_btn" id="name_subzzz5">进入游戏</a></div>	
+	</div>
+	</script>
+
+
+	<!--新手页面武将选择-->
+	<script type="text/html" id="newUser_wj">
+		<div class="choic pre" id="role_choice">
+			<div class="newRoleT"></div>
+			<div class="choicC">
+				<div class="ghp">
+				<div class="guojia"><img src="image/sys/huangzhong.jpg" class="skewSmall scaleTrans" id="select_wj1"></div>
+				<div class="huangzhong"><img src="image/sys/guojia.jpg" class="skewSmall scaleTrans" id="select_wj2"></ /></div>
+				</div>
+				<div class="enter pab" style="position:relative;top:-10px;"><img src="image/sys/enter_1.png" id="entergame" /></div>
+			</div>
+			<div class="newRoleB"></div>
+			<div class="choicB pab">
+				<div class="choicBt fs20 cor55"><span id="zmu_dialog"></span><p id="show_type"  style="opacity:0;"><img src="image/sys/l.png" align="top"/> 为力量型<img src="image/sys/z.png" align="top"/> 为智力型</p>
+				</div>
+			</div>
+		</div>
+	</script>
+	<!--登录弹窗-->
+	<script type="text/html" id="login_tmpl">
+		<div class="backPop">
+				<div class="backPopM">
+					<div class="bak">
+						<div class="bakM">
+							<div style="width:430px;margin:100px auto;font-size:24px;">
+								<span class="stro3 cor33">用户名：</span><input id="u_name" type="text" style="width:320px;line-height:50px;font-size:24px;background-color: #FFFFFF;" class="bor5"/>
+								<br/>
+								<br/>
+								<div style="text-align:center;" class='fs18 cor3'>请填写游戏角色名(仅测试用)</div>
+							</div>
+						</div>
+						</div>
+						<div style="text-align:center;margin:0 auto;width:340px;">
+							<a class="ml10 pub_btn fl" id="u_login">登录</a><a class="pub_btn ml10 fr" id="u_register">注册</a>
+						</div>
+					</div>
+				</div>
+			</div>
+	</script>
+	<!--武将选择页面-->
+	<script type="text/html" id="wujiang_tmpl">
+		<div class="zhaoM">
+		<div class="qiangT pab" id="xzWJ"><img src="image/sys/xuanzewujiang.png" /></div>
+		<div class="exit x"></div>
+		<div class="wBack inpBack"></div>
+		<!--div class="zhaoNav" id="nav">
+			<img id="wj" src="image/sys/wujiang1_n1.png" clickImg="image/sys/wujiang1_n.png" class="over" />
+			<img id="zm" src="image/sys/zhaomu1_n.png" clickImg="image/sys/zhaomu1_n1.png" />
+		</div-->
+		<div class="bors10" id="tabCon">
+			<div id="part1" class="zhaoMain bors10">
+				<div id="onewj_temp" style="display:none;">
+					<div style="width:216px;float:left;margin-left:14px;" class='selectNpc'>
+						<dl class="zhaoList zL1">
+							<dt class="zhaoListT">${lv}</dt>
+							<dd><img src="" class="big" style="width:163px;height:163px;"/></dd>
+							<dd class="zhaoStar"></dd>
+							<dd class="wjName">${name}</dd>
+						</dl>
+						<a class="pub_btn">训练</a>
+						<p class='waittime'></p>
+					</div>
+				</div>
+				<div id="wj_list" style="width:820px;height:415px;"></div>
+			</div>
+			<div id="part2" style="display:none;">
+			</div>
+		</div>
+	</div>
+	</script>
+        <!--强化-->
+	<script type="text/html" id="qianghua_tmpl">
+        <div class="zhaoM">
+	<div class="exit x"></div>
+	<div class="wBack inpBack"></div>
+	<div class="qiangT pab"><img id="qh_icon" src="image/sys/qianghua_t.png" /></div>
+        <div id="qh_wj_list" class="fl" style="height:450px;width:425px;margin-left:20px"></div>
+        <div id="qh_wj_temp" style="display:none">
+            <div class="zhuangB fl" style="margin-left:0px;">
+		<ul class="qiangLt tc" style="height:58px">
+			<li class="fs24" id="wj_name"></li>
+			<li id="qh_star" style="display: none;"></li>
+		</ul>
+		<div class="qiangList">
+			<p><img src="image/sys/zb_s.png" /></p>
+			<div class="zBgz1" id="part_1"></div>
+			<div class="zBgz2" id="part_2"></div>
+			<div class="zBgz3" id="part_3"></div>
+			<div class="zBgz4" id="part_4"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="qiangList" style='display:none;'>
+			<p><img src="image/sys/jq_s.png" /></p>
+			<div class="zBgz5" id="part_6"></div>
+			<div class="zBgz5" id="part_7"></div>
+			<div class="zBgz5" id="part_8"></div>
+		</div>
+		<div class="zmapB" style="padding-top:10px">
+				<a id="qh_wj_prev" class="zmapBl"></a><a id="qh_page" class="zmapBn fs18" style="height:30px"></a><a id="qh_wj_next" class="zmapBr"></a>
+			</div>
+			<div class="zmapB fs18">左右划动选择武将</div>
+            </div>
+        </div>
+        <div id="qh_con"></div>
+        <div id="qh_temp" style="display:none">
+	<div class="qiangHR fl">
+		<div class="qiangRt fr fs18"></div>
+		<ul class="qiangRl fl pre">
+			<li class="gh1 pab" id="rot_eff1"></li>
+			<li class="gh2 pab" id="rot_eff2"></li>
+			<li class="qiangP pab"><img src="${imgFPath}" height="78" width="78" class="bors10" /></li>
+		</ul>
+		<dl class="qiangRr fl">
+			<dt class="cor60 fs24">${name}</dt>
+			<dd>强化等级：${level}<span class="zouni"></span><span class="cor60">${nup_level}</span></dd>
+                        {{each upAttr}}<dd>${$value.n}：${$value.v}<span class="zouni"></span><span class="cor60">${$value.nv}</span></dd>{{/each}}
+			<dd style="color:#f7f406">消耗：${uplevelcost}金</dd>
+		</dl>
+		<div class="tc clear"><a class="pub_btn fs24 stro13">强化</a></div>
+	</div>
+        </div>
+    </div>
+    </script>
+    <!--精英地图-->
+    <script type="text/html" id="elite_tmpl">
+    <div class="zhaoM">
+	<div class="exit x"></div>
+	<div class="qiangT pab" style="left:392px"><img src="image/sys/jyjt_t.png" /></div>
+            <div id="elite_list" class="tower bors10" style="width:863px;"></div>
+            <div id="elite_temp" style="display:none">
+                <div class="towerL">
+                <div class="towerPic fl"><img id="elite_img" class="bors10"/></div>
+                <div class="dj tc fs22 fl" id="elite_name"></div>
+                <div class="towerR">
+                    <div class="towerRli"><img id="elite_awa1" height="60" width="60"></div>
+                    <div class="towerRli"><img id="elite_awa2" height="60" width="60"></div>
+                    <div class="towerRli"><img id="elite_awa3" height="60" width="60"></div>
+                    <div class="towerRli"><img id="elite_awa4" height="60" width="60"></div>
+                    <div class="towerRli"><img id="elite_awa5" src="image/game/jinbi.jpg" height="60" width="60"></div>
+                    <div class="towerRl"><img src="image/sys/zztg.png" align="left"/><p class="twoerBtn bors5 tc fs20" id="elite_first_user"></p></div>
+                </div>
+                <p class="towBtn"><a id="elite_sd">扫荡</a></p>
+                </div>
+            </div>
+    </div>
+    </script>
+    <script type="text/html" id="elite_s_tmpl">
+        <div class="zhaoM">
+	<div class="exit x"></div>
+	<div class="wBack inpBack"></div>
+	<div class="zmapT pab bors10 tc fs26 stro13" id="elite_s_name"></div>
+        <div id="elite_s_list" class="zMap towerLe" style="width:873px;height:425px;overflow: hidden;"></div>
+        <div class="zmapB" style="margin-top:-55px">
+            <a class="zmapBl"></a><a id="elite_page" class="zmapBn fs18" style="height:30px"></a><a class="zmapBr"></a>
+        </div>
+        <div id="jyMapPage">
+			<div class="fanyeL pab" data-fx="left" style="left: 5px;"></div>
+			<div class="fanyeR pab" data-fx="right" style="right:5px;"></div>
+		</div>
+        <div id="elite_s_temp" style="display:none"></div>
+    </div>
+    </script>
+	<!--武将操作页面-->
+	<script type="text/html" id="wjoperate_tmpl">
+	<div class="zhaoM">
+	<div class="exit x"></div>
+	<div class="zhaoNav" id="nav_Bag">
+		<!--<img src="image/sys/beibao1_n1.png" clickImg="image/sys/beibao1_n.png" class="over" />-->
+		<!--<img src="image/sys/jiaoqie1_n.png" clickImg="image/sys/jiaoqie1_n1.png" />-->
+	</div>
+	<div class="wBack inpBack"></div>
+	<!-- 
+		<div class="zhuangBN fl bors10"  id="wearList"  style="width:420px;height:425px;"></div>
+		<div class="zhuangBN fl bors10"  id="wearJiaoqie"  style="width:420px;height:425px;"></div>
+	-->
+	<div id="wuJiao">
+		<!--
+			<div class="zhuangBr fl" id="WJequipList" style="width:428px;height:425px;"></div>
+			<div class="zhuangBr fl" style="display:none; width:428px;height:425px;" id="WJjiaoqieList" ></div>
+		-->
+	</div>
+</div>
+	</script>
+	<!--武将左侧信息显示页面-->
+	<script type="text/html" id="wjinfo_tmpl">
+		<div class="requiL fl" id="wjinfo_list">
+			<div id="wjinfocon" style="width:392px;height:412px;">
+			</div>
+			<div class="requiLb ma">
+				<div class="requiLbl fl" id="btn_prevPage"></div>
+				<div class="requiLbc fl bors10 fs20 cor59"><label id="wj_cindex"></label>/<label id="wj_alllen"></label></div>
+				<div class="requiLbr fl" id="btn_nextPage"></div>
+			</div>
+		</div>
+	</script>
+	<!--武将左侧信详细信息-->
+	<script type="text/html" id="wjinfocon_tmpl">
+		<div class="requiLt">
+			<div class="requiLtl fl">
+				<div class="pubBox" id="part_1"><img /><p class="pubJb fs18 cor55 tc"><img src="image/sys/pub_jb.png"/><span></span></div>
+				<div class="pubBox" id="part_3"><img /><p class="pubJb fs18 cor55 tc"><img src="image/sys/pub_jb.png"/><span></span></div>
+			</div>
+			<div class="requiLtc fl">
+				<p class="fs24">${name}</p>
+				<p class="fs18">等级 ${level}级</p>
+				<img id="wj_img" style="width:179px;height:179px;" />
+			</div>
+			<div class="requiLtl fl">
+				<div class="pubBox pre"  id="part_2"><img src="" /><p class="pubJb fs18 cor55 tc"><img src="image/sys/pub_jb.png"/><span></span></div>
+				<div class="pubBox"  id="part_4"><img src="" /><p class="pubJb fs18 cor55 tc"><img src="image/sys/pub_jb.png"/><span></span></div>
+			</div>
+		</div>
+		<p class="clear"></p>
+		<div class="zb_blood"></div>
+		<div class="zb_bloodN"  id="wjexp"></div>
+		<div class="fs16 cor55 zb_bloodT tc">${exp}/${expUp}</div>
+		<ul class="requiLc fs16">
+			<li><img src="image/sys/z.png" /><span>${str}</span></li>
+			<li><img src="image/sys/l.png" /><span>${inte}</span></li>
+			<li><img src="image/sys/s.png" /><span>${hp}</span></li>
+			<li class="cor56"><img src="image/sys/z_n.png" /><span>${skname}</span></li>
+		</ul>
+	</script>
+	<!--武将洗练-->
+	<script type="text/html" id="xilian_tmpl">
+		<div class="requiR fl bors12">
+			<div class="succinT">
+				<ul class="succinTl fl fs22 cor55">
+					<li>原属性</li>
+					<li><span class="fl">力量</span><p class="bors10 fl tc">${str}+${add_str}</p></li>
+					<li><span class="fl">智力</span><p class="bors10 fl tc">${inte}+${add_inte}</p></li>
+				</ul>
+				<ul class="succinTl fl fs22 cor60">
+					<li>新属性</li>
+					<li><span class="fl">力量</span><p class="bors10 fl tc">${new_str}</p></li>
+					<li><span class="fl">智力</span><p class="bors10 fl tc">${new_inte}</p></li>
+				</ul>
+			</div>
+			<ul class="succinC bors12 cor55 fs22" id="xl_temp">
+				<li class="over">十年洗练 铜钱</li>
+				<li>百年洗练 <span class="cor60">2元宝</span></li>
+				<li>千年洗练 <span class="cor60">5元宝</span></li>
+				<li>万年洗练 <span class="cor60">10元宝</span></li>
+			</ul>
+			<div class="tc"><a class="pubBtn" id="btn_xilian">洗练</a>&nbsp;<a class="pubBtn" id="btn_drop" style="display:none;">放弃</a>&nbsp;<a class="pubBtn" id="btn_tihuan" style="display:none;">替换</a></div>
+		</div>
+	</script>
+	<!--背包中的物品，娇妾，法宝-->
+	<script type="text/html" id="equip_tmpl">
+		<div class="requiR fl bors12">
+		<div class="reeuiRl fl"></div>
+		<div class="requiRc fl" style="width:440px;height:402px;" id="wjequip_list">
+			<!--<div class="pubBox pre"><img src="image/zb_pic.png" /><p class="pubJb pab fs18 cor55 tc">15</p></div>-->
+		</div>
+		<div class="reeuiRr fl"></div>
+	</div>
+	</script>
+	<!--武将装备小弹窗-->
+	<script type="text/html" id="equip_show_tmpl">
+<div class="pubPop">
+	<div class="pubPopT fs24">
+		<p class="xz fl"><img width="80" height="80" id="equip_img" src=""></p>
+		<div class="cor55 pubPTt fl ls1">
+			<dl>
+				<dt class="fs28 cor95" id="equip_name">0</dt>
+				<dd>强化等级：<span class="cor95" id="equip_level">0</span></dd>
+				<dd id="att"></dd>
+			</dl>
+			<dl>
+				<dd id="allow_equip_level"> 穿戴等级：30</dd>
+				<dd id="wearPosition">穿戴部位：鞋子</dd>
+			</dl>
+			<dl>
+				<dd id="price">售价：400</dd>
+			</dl>
+		</div>
+		<div class="pubR fl">
+			<p class="send" id="wear">装备</p>
+			<p class="rech" id="sail">出售</p>
+		</div>
+	</div>
+</div>
+	</script>
+	<!--个人主页-->
+	<script type="text/html" id="userInfo_tmpl">
+<div>
+<div class="zhaoM">
+	<div class="exit" id="gerenxinxi"></div>
+	<div class="qiangT pab"><img src="image/sys/zgxx_t.png" /></div>
+	<div class="taskC">
+		<div class="seInfoL fl">
+			<div class="seInfoL_l fl">
+				<div class="sel"></div>
+				<div class="seInfoL_m bors10">
+				  <div class="selInP pre fs18 cor55">
+						<p class="selT tc"><span class="fs16">Vip</span>${vip}</p>
+						<img src="${img}" width=174 height=174 />
+					</div>
+				</div>
+				<div class="sel"></div>
+				<div class="czrs">
+					<div class="sel"></div>
+					<div class="czrsM cor104 bors10">
+						<p class="czrsMt fs20 tc">出战人数</p>
+						<p class="czN fs30 tc">${limit}</p>
+						<p class="cor1 fs18 tc">${jiang}</p>
+					</div>
+					<div class="sel"></div>
+			</div>
+			</div>
+			<div class="seInfoL_r fl">
+				<div class="sel"></div>
+				<div class="seInfoR_m bors10">
+					<div class="seInfoRt fs20 cor55">
+						<p>${name}</p>
+						<p class="vip fs18">lv${level}</p>
+					</div>
+					<div class="sel_blood tc cor55"><div style="width:${width}px;"></div><span class="pre">${curr_exp}/${expUp}</span></div>
+					<div class="selR_li selBg1">竞技排名<p class="cor99">无</p></div>
+					<div class="selR_li selBg2">武将数<p class="cor100">${npcNum}</p></div>
+					<div class="selR_li selBg3">体力<p id="uinfoTL" styele="text-align:center;" class="cor101">${xtili}</p></div>
+					<div class="selR_li selBg4">声望<p class="cor102">${reputation}</p></div>
+					<div class="selR_li selBg5">元宝<p class="cor67">${yb}</p></div>
+					<div class="selR_li selBg6">钱币<p class="cor103">${gold}</p></div>
+				</div>
+				<div class="sel"></div>
+			</div>			
+		</div>
+		<div class="seInfoR fl">
+			<div class="seInfoR_t bors10">
+			<div class="index">
+				<div class="want fs20 cor104 tc">我要钱币</div>
+				<div class="wantList">
+					<div class="sel"></div>
+					<div class="wantM bors5">
+						<dl>
+							<dt><img src="image/sys/yq.png" /></dt>
+							<dd class="wantxt fs18 cor55">开放等级：<span>15</span><br />消耗<em>元宝</em>获得<em>钱币</em></dd>
+							<dd class="wdxx_btn tc fs20 ${btn}" id="yaoqiangshu">前往摇钱</dd>
+						</dl>
+					</div>
+					<div class="sel"></div>
+				</div>
+			</div>
+			<div class="index">
+				<div class="want fs20 cor104 tc">我要元宝</div>
+				<div class="wantList">
+					<div class="sel"></div>
+					<div class="wantM bors5">
+						<dl>
+							<dt><img src="image/sys/yb.png" /></dt>
+							<dd class="wantxt fs18 cor55">已开启<span></span><br />立即<em>充值</em></dd>
+							<dd class="wdxx_btn tc fs20 pub_btn2" id="yaoCharge">前往充值</dd>
+						</dl>
+					</div>
+					<div class="sel"></div>
+				</div>
+			</div>
+			<div class="index">
+				<div class="want fs20 cor104 tc">我要体力</div>
+				<div class="wantList">
+					<div class="sel"></div>
+					<div class="wantM bors5">
+						<dl>
+							<dt><img src="image/sys/bc.png" /></dt>
+							<dd class="wantxt fs18 cor55">开放等级：<span>0</span><br />消耗<em>元宝</em>获得<em>体力</em></dd>
+							<dd class="wdxx_btn tc fs20 ${btn}" id="yaotili">补充体力</dd>
+						</dl>
+					</div>
+					<div class="sel"></div>
+				</div>
+			</div>
+			<div class="index">
+				<div class="want fs20 cor104 tc">我要声望</div>
+				<div class="wantList">
+					<div class="sel"></div>
+					<div class="wantM bors5">
+						<!--<dl>
+							<dt><img src="image/sys/jj.png" /></dt>
+							<dd class="wantxt fs18 cor55">暂未开放<span></span><br /></dd>
+							<dd class="wdxx_btn tc fs20 hpub_btn2">前往竞技</dd>
+						</dl>-->
+					</div>
+					<div class="sel"></div>
+				</div>
+			</div>
+			</div>
+			<div class="selB tc">
+				<div class="selSL"></div>
+				<div class="selSN fs20 cor55 bors5"><span class="current_page">1</span><span style="padding:0 3px;">/</span><span class="total"></span></div>
+				<div class="selSR"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+	</script>
+	<!--镶嵌-->
+	<script type="text/html" id="xiangqian_tmpl">
+		<div class="recrui pre">
+			<div class="x pab"></div>
+			<div class="inpBack fl"></div>
+			<div class="qhN pab"><img src="image/sys/xiangqian_n.png" /></div>
+			<p class="clear"></p>
+			<div class="requiL fl">
+				<div id="xqWujiangList" style="width: 392px; height: 412px; overflow: hidden;">	
+				</div>
+				<div class="requiLb ma" id="xqPageContainer">
+					<div class="requiLbl fl"></div>
+					<div class="requiLbc fl bors10 fs20 cor59"><label id="xqWujiangIndex">0</label>/<label id="xqWujiangNum">0</label></div>
+					<div class="requiLbr fl"></div>
+				</div>
+			</div>
+			<div class="xqR fl">
+				<div class="xqRl fl">
+					<div class="xqRlT fs24 cor60 tc">已镶咒符</div>
+					<dl>
+						<dt class="pubBox pre fl"><img src="image/game/baguafu1.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></dt>
+						<dd class="fs22 fl cor60">八卦符<p class="cor55">攻击+5</p></dd>
+					</dl>
+					<dl>
+						<dt class="pubBox pre fl"><img src="image/game/baguafu1.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></dt>
+						<dd class="fs22 fl cor60">八卦符<p class="cor55">攻击+5</p></dd>
+					</dl>
+					<dl>
+						<dt class="pubBox pre fl"><img src="image/game/baguafu1.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></dt>
+						<dd class="fs22 fl cor60">八卦符<p class="cor55">攻击+5</p></dd>
+					</dl>
+				</div>
+				<div class="xqRr fl">
+					<div class="xqRlT fs24 tc cor55">可镶嵌符咒</div>
+					<div class="reeuiRl fl"></div>
+					<div class="xqRrC fl">
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+						<div class="pubBox pre"><img src="image/game/budongmingwangfu6.jpg" /><p class="pubJb pab fs18 cor55 tc">20</p></div>
+					</div>
+					<div class="reeuiRr fl"></div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<!--地图-->
+	<script type="text/html" id="map_tmpl">
+            <div class="zhaoM">
+                <div class="exit x"></div>
+                <div class="wBack inpBack"></div>
+                <div class="qiangT pab"><p id="m_tit" class=""></p></div>
+                <div id="mapContainer" style="width:875px;height:425px;margin-left:25px;margin-top:25px;background:url(image/sys/map2.jpg)">
+                </div>
+                <div id='mapPage'>
+                	<div class="fanyeL pab"></div>
+                	<div class="fanyeR pab"></div>
+                </div>
+                <div id="mapPageNum" class='fs18' style='margin-top:-30px;text-align: center;color: #D2A658;'>
+                	<span>--</span>
+                	<label>/</label>
+                	<span>--</span>
+                </div>
+            </div>
+	</script>
+	<!--小地图-->
+	<script type="text/html" id="smap_tmpl">
+        <div class="zhaoM">
+            <div class="exit x"></div>
+            <div class="wBack inpBack"></div>
+            <div class="zmapT pab bors10 tc fs26 stro13" id="smap_title"></div>
+            <div class="zMap pre" id="map_backGround" style="margin-top:24px;border-radius:15px">
+                <div class="zmapM">
+                    <div class="zmapZ bors10 pab"></div>
+                    <div id="smap_list" class="pre" style="height:395px;overflow: hidden;"></div>
+                    <div id="smallMapPage">
+						<div class="fanyeL pab" data-fx='left'></div>
+						<div class="fanyeR pab" data-fx='right'></div>
+					</div>
+                    <div class="zmapB">
+                        <a class="zmapBl"></a><a class="zmapBn fs18" id="smap_pager">0/0</a><a class="zmapBr"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</script>
+	<!--战斗准备-->
+	<script type="text/html" id="battle_pre">
+		<div>
+			<div class="zhdPop pab">
+				<div class="x pab oneclose"></div>
+				<div class="zhdTit bors5 fs28 stro2 tc">${name}</div>
+				<div class="zhdPM bors18">
+					<dl>
+						<dt class="pre thun_box"><img src="image/game/${img}"><p class="sj pab"></p></dt>
+						<dd class="cor55">等级：${level}级</dd>
+						<dd class="cor12">奖励：{{each drop}}${$value.v}{{/each}}</dd>
+					</dl>
+					<div class="zhdPb"> ${info} </div>
+				</div>
+				<div class="zhdPF tc fs28 stro12"><a class="pubBtn" id="btnDialogSaodang">扫荡</a><a class="pubBtn" id="btn_beginBattle">战斗</a></div>
+			</div>
+		</div>
+	</script>
+	<!--扫荡-->
+	<script type="text/html" id="saodang_tmpl">
+        <div class="sweepM pab">
+            <div class="yaoQT"><img src="image/sys/sdjg_t.png" /></div>
+            <div class="exit x oneclose"></div>
+            <div class="yaoQM bors10">
+                <div class="sweepC">
+                    <div class="sweepT bors5 fs20">
+                        <div class="sweepL fl cor55" id="dropList" style="height:268px;"></div>
+                        <div class="sweepScr fr bors10"><p id="sd_Block"></p></div>
+                    </div>
+                    <div class="sweepB fs20 tc" id="sdChoice"><a class="sdcs">扫荡次数</a><a class="jian" id="sd_jian"></a><a class="cs bors5 fs30" id="sd_val">1</a><a id="sd_jia"></a><a style="display:none;" id="sd_max" class="max"></a><a class="pub_btn" id="beginSD">扫荡</a></div>
+                    <!--<div class="tc"><a class="pub_btn" id="beginSD">扫荡</a></div>-->
+                </div>
+            </div>
+	</div>
+	</script>
+    <script type="text/html" id="saodang_elite_tmpl">
+    <div class="sweepM pab">
+		<div class="yaoQT"><img src="image/sys/sdjg_t.png" /></div>
+	    <div class="exit x oneclose"></div>
+	    <div class="yaoQM bors10">
+            <div class="sweepC">
+                <div class="sweepT bors5 fs20">
+                    <div class="sweepL fl cor55" id="dropList_elite" style="height:268px;"></div>
+                    <div class="sweepScr fr bors10"><p id="sd_Block_elite"></p></div>
+                </div>
+                <div class="sweepB fs20 tc" id="elite_text"></div>
+                <div class="tc"><a class="pub_btn" id="elite_beginSD">扫荡</a></div>
+            </div>
+	     </div>
+	</div>
+    </script>
+	<!--战斗对话框右面-->
+	<script type="text/html" id="battleDialog_tmpl">
+		<div style="position:absolute; background-color:#000; width:1024px; height:872px;" id="bDialog">
+			<div class="xinshou_pop1 pab" style="display:none;position: fixed;bottom: 0px;" id="uimg">
+				<img id="uImg" width="168px" height="180px" />
+				<p id="uimg_content"></p>
+				<a class="fs24 fr"><img src="image/sys/d.gif"></a>
+			</div>
+			<div class="xinshou_pop1 pab spfz" style="display:none;position: fixed;bottom: 0px;" id="npcimg">
+				<img id="nImg" width="168px" height="180px" />
+				<p id="npcimg_content" class="spfz"></p>
+				<a class="fs24 fl spfz"><img src="image/sys/d.gif"></a>
+			</div>
+		</div>
+	</script>
+	<!--战斗-->
+	<script type="text/html" id="battle_tmpl">
+		<div class="wareM">
+			<div style='height:107px;width:1024px;'>
+			<div class="wareBl pre fl" style="margin-left:101px;">
+				<div class="wareBl1 hpAndFuryAni" id="leftBlood"></div>
+			</div>
+			<div class="wareX fl pre" id="battle_fastend"></div>
+			<div class="wareBlr pre fl spfz">
+				<div class="wareBl1 hpAndFuryAni" id="rightBlood"></div>
+			</div>
+			</div>
+			<div style="width:1024px;height:446px;">
+				<div class="wareL fl " style="margin-right:275px">
+					<div class="wareLBox" id="left20"></div>
+					<div class="wareLBox" id="left10"></div>
+					<div class="wareLBox" id="left00"></div>
+					<div class="wareLBox" id="left21"></div>
+					<div class="wareLBox" id="left11"></div>
+					<div class="wareLBox" id="left01"></div>
+					<div class="wareLBox" id="left22"></div>
+					<div class="wareLBox" id="left12"></div>
+					<div class="wareLBox" id="left02"></div>
+				</div>
+				<div class="wareL fr" style="float:left;">
+					<div class="wareLBox" id="right00"></div>
+					<div class="wareLBox" id="right10"></div>
+					<div class="wareLBox" id="right20"></div>
+					<div class="wareLBox" id="right01"></div>
+					<div class="wareLBox" id="right11"></div>
+					<div class="wareLBox" id="right21"></div>
+					<div class="wareLBox" id="right02"></div>
+					<div class="wareLBox" id="right12"></div>
+					<div class="wareLBox" id="right22"></div>
+				</div>
+			</div>
+			<p class="clear"></p>
+			<div class="wareF fl" style="position:fixed;bottom:0px;left:0px;"><div class="fl" id="leftImg"></div><p class="fs20 fl cor55" id="leftName"></p></div>
+			<div class="wareF fr spfz" style="position:fixed;bottom:0px;left:704px;"><div class="fl spfz" id="rightImg"></div><p class="fs20 fl cor55 spfz tr" style="padding-right:10px" id="rightName"></p></div>
+		</div>
+	</script>
+	<script type="text/html" id="battleSkill_tmpl">
+		<div class="wareP pab skill" style="height:169px;">
+			<div class="wareP_fg1 pab" style="display:none;"></div>
+			<div class="wareP_fg2 pab" style="display:none;"></div>
+			<div class="wareP_fg3 pab" style="display:none;"></div>
+			<div class="wareP_fg0 pab" style="display:none;"></div>
+			<div class="warePP pre" style="margin-left:0px;width:100%">
+				<div id='wj_bigImg' style='position:absolute;width:291px;height:169px;display:none;'></div>
+				<div id="wj_skillName" style="position:absolute;display:none;line-height:169px;"></div>
+			</div>
+		</div>
+	</script>
+	<!--战斗失败-->
+	<script type="text/html" id="battleLost_tmpl">
+    <div class="failM pab">
+		<div class="failT"><img src="image/sys/fail.png" /></div>
+		<div class="failC bors10">
+			<div class="failT1 bors5"><img src="image/sys/nkycs.png" /></div>
+			<div class="failW">
+				<div class="failBtn" id="lost_buzhen">调整阵型</div>
+				<div class="failBtn" id="lost_qianghua">强化装备</div>
+				<div class="failBtn" id="lost_task">完成任务</div>
+				<!--div class="failBtn" id="lost_bag">打开礼包</div-->
+				<div class="failBtn"></div>
+				<div class="failBtn"></div>
+			</div>
+			<div class="tc"><a class="pub_btn" id="btn_back">确认</a></div>
+		</div>
+    </div>
+	</script>
+	<!--战斗胜利-->
+	<script type="text/html" id="battleWin_tmpl">
+        <div>
+        <div class="failM pab">
+            <div class="wonT"><img src="image/sys/wonT.png" /></div>
+            <div class="failC bors10">
+                <ul class="wonTop fs20 cor55">
+                    <li>主公经验<em>+${exp.v}</em></li>
+                    <li>武将经验<em>+${exp.v}</em></li>
+                    <li>钱币 <span>+${gold.v}</span></li>
+                </ul>
+                <div class="failT1 bors5"><img src="image/sys/wpjl.png" /></div>
+                <div class="wonCe fs20">
+                    <dl style="display:${wupin.a.show}">
+                        <dt>{{html wupin.a.img}}</dt>
+                        <dd class="cor105">${wupin.a.name}<span class="cor55">${wupin.a.num}</span></dd>
+                    </dl>
+                    <dl style="display:${wupin.b.show}">
+                        <dt>{{html wupin.b.img}}</dt>
+                        <dd class="cor105">${wupin.b.name}<span class="cor55">${wupin.b.num}</span></dd>
+                    </dl>
+                </div>
+                <!--按钮存在一个--><div class="wonB tc"><!--<a class="pub_btn fl">回放</a>--><a class="pub_btn" id="btn_confirm">确认</a></div>
+				<!--两个按钮同时存在<div class="wonB"><a class="pub_btn fl">回放</a><a class="pub_btn fr" id="btn_confirm">确认</a></div>-->
+            </div>
+	</div>
+        </div>
+	</script>
+	<!--任务-->
+	<script type="text/html" id="task_tmpl">
+	<div class="zhaoM">
+	<div class="exit x"></div>
+	<div class="qiangT pab"><img src="image/sys/renwu_t.png" /></div>
+	<div class="taskC">
+		<div class="taskL fl bors10 fs24 cor55">
+			<div class="taskLL fl" id="taskList" style="width:278px;height:390px;margin-right: 13px;">
+			</div>
+			<div class="taskScroll fl"><p id="t_sBlock" ></p></div>
+		</div>
+		<div class="taskR fl bors10">
+			<div id="taskinfo_tmpl" style="display:none;">
+				<div>
+				<dl class="">
+					<dt>任务：${name}<span class="cor55">(<span class="cor62">${typeName}</span>)</span></dt>
+					<dd style="width:410px;height:75px;">${info}</dd>
+					<div class="rwPic"><img style="width:90px;height:115px;"/></div>
+				</dl>
+				<dl class='w460 pt10'>
+					<dt>任务需求：</dt>
+					<dd><span class='needName'>关卡</span><span class="cor98"> ${battle_name}</span><span class="cor98">(${conFinished}/${conNum})</span></dd>
+				</dl>
+				<dl class='w460 pt10'>
+					<dt>任务奖励：</dt>
+					<dd class="rwBox"></dd>
+				</dl>
+				<p class="clear"></p>
+				<div class="taskF">
+					<a class="pub_btn4 fl">前去完成</a><a class="pub_btn4 fr">领取奖励</a>
+				</div>
+				</div>
+			</div>
+			<div id="taskInfoContainer" style="100%;height:100%;">
+			</div>
+		</div>
+	</div>
+</div>
+	
+	</script>
+	<!--摇钱树-->
+	<script type="text/html" id="tmpl_yaoqianshu">
+	<div>
+		<div class="yaoQ pab">
+			<div class="exit x"></div>
+			<div class="yaoQT"><img src="image/sys/yaoqianshu_n.png" /></div>
+			<div class="yaoQM bors10">
+				<div class="yaoQC">
+					<ul class="yaoQG cor55 fs18" id="yqs_user">
+						<li><img src="image/sys/gold.png" /> <span id="yqs_yb">${user.yb}</span></li>
+						<li><img src="image/sys/coin.png" /> <span>${user.gold}</span></li>
+					</ul>
+					<div class="yaoS bors10 fr"><p style="width:160px;"><img src="image/sys/sycs.png" align="left"/><span class="cor35" id="qysLeftNum">${yq.c_num}</span></p></div>
+					<div class="yaoStree fl" id="yqs_tree"></div>
+					<p class="clear"></p>
+					<div class="yaoB tc fs18">消耗 <span class="cor55" id="yqs_n_yb">${yq.needYB}</span> 元宝   获得 <span class="cor55" id='qysGetGold'>${yq.getGold}</span> 钱币</div>
+				</div>
+				<div class="yaoF tc"><a class="fl pub_btn" id="btn_yqs">摇一摇</a><a class="pub_btn fr" id="btn_yqs_lots">批量摇钱</a></div>
+			</div>
+		</div>
+	</div>
+	</script>
+	<!--锻造-->
+	<script type="text/html" id="duanzao_tmpl">
+		<div class="zhaoM">
+			<div class="exit x"></div>
+			<div class="zhaoNav"><img type='1' src="image/sys/n_qh.png" /><img type='2' src="image/sys/n_hc.png" /></div>
+			<div class="wBack"></div>
+			<div class="forging con_qh" loaded = '0'>
+        <div id="qh_wj_list" class="fl" style="height:450px;width:425px;margin-left:20px"></div>
+        <div id="qh_wj_temp" style="display:none">
+            <div class="zhuangB fl" style="margin-left:0px;">
+		<ul class="qiangLt tc" style="height:58px">
+			<li class="fs24" id="wj_name"></li>
+			<li id="qh_star" style="display: none;"></li>
+		</ul>
+		<div class="qiangList">
+			<p><img src="image/sys/zb_s.png" /></p>
+			<div class="zBgz1" id="part_1"></div>
+			<div class="zBgz2" id="part_2"></div>
+			<div class="zBgz3" id="part_3"></div>
+			<div class="zBgz4" id="part_4"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="qiangList" style="display: none;">
+			<p><img src="image/sys/jq_s.png" /></p>
+			<div class="zBgz5" id="part_6"></div>
+			<div class="zBgz5" id="part_7"></div>
+			<div class="zBgz5" id="part_8"></div>
+		</div>
+		<div class="zmapB" style="padding-top:10px">
+				<a id="qh_wj_prev" class="zmapBl"></a><a id="qh_page" class="zmapBn fs18" style="height:30px"></a><a id="qh_wj_next" class="zmapBr"></a>
+			</div>
+			<div class="zmapB fs18">左右拖动选择武将</div>
+            </div>
+        </div>
+        <div id="qh_con"></div>
+        <div id="qh_temp" style="display:none">
+	<div class="qiangHR fl">
+		<div class="qiangRt fr fs18"></div>
+		<ul class="qiangRl fl pre">
+			<li class="gh1 pab" id="rot_eff1"></li>
+			<li class="gh2 pab" id="rot_eff2"></li>
+			<li class="qiangP pab"><img src="${imgFPath}" height="78" width="78" class="bors10" /></li>
+		</ul>
+		<dl class="qiangRr fl">
+			<dt class="cor60 fs24">${name}</dt>
+			<dd>强化等级：${level}<span class="zouni"></span><span class="cor60">${nup_level}</span></dd>
+                        {{each upAttr}}<dd>${$value.n}：${$value.v}<span class="zouni"></span><span class="cor60">${$value.nv}</span></dd>{{/each}}
+			<dd style="color:#f7f406">消耗：${uplevelcost}金</dd>
+		</dl>
+		<div class="tc clear"><a class="pub_btn fs24 stro13">强化</a></div>
+	</div>
+        </div>	
+			</div>
+			<div class="forging con_hc" style='display:none;margin-top: 20px;' loaded = '0'>
+				<div class="synthM">
+				<div class="synthL fl">
+					<div class="synlT">
+						<div class="synltL fl" id='t_equip_img'>
+						</div>
+						<div class="synltR fl cor55">
+							<dl id="hecheng_info">
+								<dt class="bors10 fs20 synTit"><span id="s_equip_name">原装备</span><span class="zouni1"></span><em id='t_equip_name'>目标装备</em></dt>
+							</dl>
+						</div>
+					</div>
+					<div class="xhcl synTit bors10"><img src="image/sys/xhcl.png" /></div>
+					<div class="synlC" id="metList">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="tc"><a class="pub_btn4" id="btn_hecheng">合成</a></div>
+				</div>
+				<div class="synthR fl">
+					<div class="synthrL fl"></div>
+					<div class="synthrR fl" id="equipHechengList" style="width:306px;height:404px;padding-top:30px;">
+				  </div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</script>
+	<!--合成-->
+	<script type="text/html" id="hecheng_tmpl">
+		<div class="zhaoM">
+		<div class="exit x" id="closeHechengWindow"></div>
+		<div class="qiangT pab"><img src="image/sys/hecheng_t.png" /></div>
+		<div class="synthM">
+			<div class="synthL fl">
+				<div class="synlT">
+					<div class="synltL fl" id='t_equip_img'>
+					</div>
+					<div class="synltR fl cor55">
+						<dl id="hecheng_info">
+							<dt class="bors10 fs20 synTit"><span id="s_equip_name">原装备</span><span class="zouni1"></span><em id='t_equip_name'>目标装备</em></dt>
+						</dl>
+					</div>
+				</div>
+				<div class="xhcl synTit bors10"><img src="image/sys/xhcl.png" /></div>
+				<div class="synlC" id="metList">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+				<div class="tc"><a class="pub_btn4" id="btn_hecheng">合成</a></div>
+			</div>
+			<div class="synthR fl">
+				<div class="synthrL fl"></div>
+				<div class="synthrR fl" id="equipHechengList" style="width:306px;height:404px;">
+			  </div>
+			</div>
+		</div>
+	</div>
+	</script>
+	<!--布阵页面模板-->
+	<script type="text/html" id="buzhen_tmpl">
+	<div class="zhaoM">
+		<div class="exit x" id="close_buzhen_window"></div>
+		<div class="wBack"></div>
+		<div class="qiangT pab"><img src="image/sys/buzhen_t.png" /></div>
+		<div class="buzhenL fl pre">
+			<div class="bzBl mt200 spfz pab" id="prev"></div>
+			<div class="buzhenLC ma" id="ZXWujiangList">
+				<!--<div><p class="bu_pz11" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>
+				<div><p class="bu_pz22" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>
+				<div><p class="bu_pz33" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>
+				<div><p class="bu_pz44" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>
+				<div><p class="bu_pz55" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>
+				<div><p class="bu_pz66" ><img src="image/zb_pic.png" width="95" height="95"/></p></div>-->
+			</div>
+			<div class="bzBr pab mt200" id="next"></div>
+		</div>
+		<div class="buzhenC fl tc">
+			<div class="buzhenN fs24" id="bz_num">2/3</div>
+			<div class="buzhenJ"></div>
+		</div>
+		<div class="buzhenR fl" id="zhenxingList">
+			<div id="h_7" class="buzhenList"></div>
+			<div id="z_4" class="buzhenList"></div>
+			<div id="q_1" class="buzhenList"></div>
+			<div id="h_8" class="buzhenList"></div>
+			<div id="z_5" class="buzhenList"></div>
+			<div id="q_2" class="buzhenList"></div>
+			<div id="h_9" class="buzhenList"></div>
+			<div id="z_6" class="buzhenList"></div>
+			<div id="q_3" class="buzhenList"></div>
+		</div>
+	</div>
+	</script>
+    <!--公告-->
+    <script type="text/html" id="announce_tmpl">
+    <div class="sysAn pab">
+	<ul id="comm_announce" class="sysUl fs22 cor55 fl" style="height:328px;margin-bottom:10px"></ul>
+	<div class="taskScroll fl mt66"><p id="ann_sBlock" ></p></div>
+	<div class="tc mt25"><a class="pub_btn x">确定</a></div>
+    </div>
+    </script>
+    <!--活动-->
+    <script type="text/html" id="activity_tmpl">
+	<div class="zhaoM">
+		<div class="exit x"></div>
+		<div class="qiangT pab"><img src="image/sys/jchd_t.png" /></div>
+		<div class="taskC">
+	        <div class="taskL fl bors10 fs24 cor107">
+	            <div class="taskLL fl" id="activityList" style="width:291px;height:390px;"></div>
+	            <div class="taskScroll fl"><p id="a_sBlock" ></p></div>
+	        </div>
+	        <div class="taskR fl bors10 fs22 cor55">
+	            <ul id="activityinfo" class="hdIntro fl"></ul>
+	            <ul id="activityinfo2" class="hdIntro fl" style="display:none"></ul>
+	            <div id="activityinfo3" class="hdIntro fl" style="display:none"></div>
+	            <div id="help_scroll" class="taskScroll fl mt10"><p id="a_sBlock2"></p></div>
+	        </div>
+		</div>
+    </div>
+	</script>
+	<!--祭坛-->
+	<script type="text/html" id='jitan_tmpl'>
+	<div class="zhaoM1">
+		<div class="exit x"></div>
+		<div class="qiangT pab"><img src="image/sys/jitan_t.png" /></div>
+		<div class="alt">
+			<img src="image/sys/zm.jpg" id='btn_zhaomu' style="width:245px;height:376px;"/>
+			<img src="image/sys/py.jpg" id='btn_peiyang'/>
+			<img src="image/sys/jh.jpg" id='btn_juhun'/>
+		</div>
+	</div>
+	</script>
+	<!--招募-->
+	<script type="text/html" id='zhaomu_tmpl'>
+		<div class="zhaoM1">
+			<div class="exit x"></div>
+			<div class="qiangT pab"><img src="image/sys/zhaomu_t.png" /></div>
+			<div class="wBack inpBack"></div>
+			<div class="zhM ls1" id='wjzm_list'>
+				
+			</div>
+			<div id="onezm_temp" style="display:none;">
+				<div class="altar">
+					<dl class="zhMT wjL1">
+						<dt class="zhMTt">${name}</dt>
+						<dd class='zmNpcImg'><img/></dd>
+						<dd class="zhaoStar"></dd>
+					</dl>
+					<div class="xh bors5"><img src="image/sys/xh.png" /></div>
+					<ul class="cor55">
+						<li>声望：<span class='zm_npc_repu'>${n_repu}</span></li>
+						<li>钱币：<span class="zm_npc_gold">${n_gold}</span></li>
+					</ul>
+					<div class="vipZ fs20 stro2" style="display:none;margin-left:110px;">${n_vip}</div>
+				</div>
+			</div>
+			<div id='zhaomu_dialog_tmpl' style="display:none;">
+				<div class="pubPop2">
+					<div class="popL fl">
+						<dl class="zhaoList zL1">
+							<dt class="zhaoListT">${level}</dt>
+							<dd><img style='width:163px;height:163px;' src="image/game/${img}" /></dd>
+							<dd class="zhaoStar"></dd>
+							<dd class="wjName">${name}</dd>
+						</dl>
+					</div>
+					<div class="popC fl fs24 cor55">
+						<dl>
+							<dt class="pubPtc">武将属性</dt>
+							<dd>力量：${str}</dd>
+							<dd>智力：${inte}&nbsp;&nbsp;生命：${hp}</dd>
+						</dl>
+						<dl>
+							<dt class="pubPtc">技能 - ${skillName}</dt>
+							<dd>${skillInfo}</dd>
+						</dl>
+						<dl>
+							<dt class="pubPtc">武将定位</dt>
+							<dd>${info}</dd>
+						</dl>
+						<dl class='unable' style="color: red;display: none;">
+						</dl>
+					</div>
+					<div class="popR fl">
+						<div class="send" id='btn_zhaomu'>招募</div>
+						<div class="rech">关闭</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</script>
+	<script type="text/html" id="charge_tmpl">
+		<div class="zhaoM">
+			<div class="exit x"></div>
+			<div class="qiangT pab"><img src="image/sys/vip_t.png" /></div>
+			<div class="vipRecT bors15 fl">
+				<div class="vipPlayer fl spfz"><img id="uimg" src="" width="182" height="166"/></div>
+				<ul class="vipIn fl fs22 ls1 fl">
+					<li class="fs24 cor55" id="uname"></li>
+					<li class="cor107 vipBlood1"><p class="vipBlood2 tc"></p></li>
+					<li class="cor110" id="describe"></li>
+				</ul>
+				<p class="fl vipTx"></p>
+			</div>
+			<div class="rech fl mt83" id="btn_vip_pay">充值</div>
+		    <p class="clear"></p>
+			<div class="vipM bors15 pre">
+				<p class="vipMT tc cor110 fs24" id="vipTQ"></p>	
+				<div class="bzBl spfz pab" id="prev"></div>	
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日可额外购买体力5次</li>
+ 						<li>2.解锁武将诸葛亮</li>
+ 						<li>3.礼包100000钱币 800声望</li>
+						<li>累计充值100元宝可获得vip1</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日可额外购买体力7次</li>
+ 						<li>2.礼包200000钱币 1500声望</li>
+						<li>累计充值500元宝可获得vip2</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.体力上限增加到70点，并且可额外购买10次</li>
+ 						<li>2.礼包300000钱币 2500声望</li>
+						<li>累计充值1000元宝可获得vip3</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日可额外购买体力15次。</li>
+ 						<li>2.礼包500000钱币 4000声望</li>
+						<li>累计充值2000元宝可获得vip4</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.体力上限增加到100点，并且可额外购买20次</li>
+ 						<li>2.解锁武将孙尚香</li>
+						<li>3.礼包5000000钱币 6000声望</li>
+						<li>累计充值5000元宝可获得vip5</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日可额外购买体力35次</li>
+ 						<li>2.礼包8000000钱币 8000声望 </li>
+						<li>累计充值10000元宝可获得vip6</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日额外购买体力50次</li>
+ 						<li>2.解锁武将孙策</li>
+						<li>3.礼包20000000钱币 15000声望</li>
+						<li>累计充值20000元宝可获得vip7</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日可额外购买体力70次</li>
+ 						<li>2.礼包30000000钱币 30000声望</li>
+						<li>累计充值50000元宝可获得vip8</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.解锁武将貂蝉</li>
+						<li>2.每日可额外购买体力90次</li>
+						<li>3.精英劫塔每日可重置15次</li>
+						<li>4.礼包50000000钱币 40000声望</li>
+						<li>累计充值100000元宝可获得vip9</li>
+					</ul>
+				</div>
+				<div class="vipUL bors15 fs22 cor55 fb ls1">
+					<ul class="vipList fl">
+						<li>1.每日额外购买体力120次。</li>
+ 						<li>2.礼包60000000钱币 80000声望</li>
+ 						<li>累计充值500000元宝可获得黄金vip</li>
+					</ul>
+				</div>
+				<div class="bzBr pab" id="next"></div>
+			</div>
+		</div>
+		<div style="display: none;" id='tmpl_charge_dialog'>
+			<div class="pubPop5 ls1" style="position: relative;">
+			<div class="exit"></div>
+			<div class='charge_type_con'>
+			<div class="mt80 sn_style" style='height:320px;' type='1'>
+				<ul class="vipBox tc fl" type='1'>
+					<li class="stro20 fs26">充值100元宝</li>
+					<li class="stro24 fs24">赠送8元宝</li>
+				</ul>
+				<ul class="vipBox tc fl" type='2'>
+					<li class="stro20 fs26">充值500元宝</li>
+					<li class="stro24 fs24">赠送58元宝</li>
+				</ul>
+				<ul class="vipBox tc fl" type='3'>
+					<li class="stro20 fs26">充值1000元宝</li>
+					<li class="stro24 fs24">赠送158元宝</li>
+				</ul>
+				<ul class="vipBox tc fl" type='4'>
+					<li class="stro20 fs26">充值5000元宝</li>
+					<li class="stro24 fs24">赠送988元宝</li>
+				</ul>
+				<ul class="vipBox tc fl" type='5'>
+					<li class="stro20 fs26">充值10000元宝</li>
+					<li class="stro24 fs24">赠送2588元宝</li>
+				</ul>
+				<ul class="vipBox tc fl" type='6'>
+					<li class="stro20 fs26">充值50000元宝</li>
+					<li class="stro24 fs24">赠送15888元宝</li>
+				</ul>
+			</div>
+			<div class="mt80 cm_style" style='height:320px;' type='2'>
+				<ul class="vipBox tc fl" type='1' rmb='2'>
+					<li class="stro20 fs26">充值20元宝</li>
+					<li class="stro24 fs24">￥2</li>
+				</ul>
+				<ul class="vipBox tc fl" type='2' rmb='4'>
+					<li class="stro20 fs26">充值40元宝</li>
+					<li class="stro20 fs26">￥4</li>
+				</ul>
+				<ul class="vipBox tc fl" type='3' rmb='8'>
+					<li class="stro20 fs26">充值80元宝</li>
+					<li class="stro20 fs26">￥8</li>
+				</ul>
+				<ul class="vipBox tc fl" type='4' rmb='11'>
+					<li class="stro20 fs26">充值110元宝</li>
+					<li class="stro20 fs26">￥11</li>
+				</ul>
+				<ul class="vipBox tc fl" type='5' rmb='14'>
+					<li class="stro20 fs26">充值140元宝</li>
+					<li class="stro20 fs26">￥14</li>
+				</ul>
+				<ul class="vipBox tc fl" type='6' rmb='17'>
+					<li class="stro20 fs26">充值170元宝</li>
+					<li class="stro20 fs26">￥17</li>
+				</ul>
+				<ul class="vipBox tc fl" type='7' rmb='21'>
+					<li class="stro20 fs26">充值210元宝</li>
+					<li class="stro20 fs26">￥21</li>
+				</ul>
+				<ul class="vipBox tc fl" type='8' rmb='30'>
+					<li class="stro20 fs26">充值300元宝</li>
+					<li class="stro20 fs26">￥30</li>
+				</ul>
+			</div>
+			</div>
+			<a class="stro24 fs24 fr cm_fc" style="display:none;margin-right: 480px;margin-top: -40px;text-decoration:underline;">点数充值</a>
+			<a class="stro24 fs24 fr cm_fc" style="display:none;margin-right: 280px;margin-top: -40px;text-decoration:underline;">点数充值记录</a>
+			<a class="stro24 fs24 fr cm_fc" style="display:none;margin-right: 90px;margin-top: -40px;text-decoration:underline;">查看消费记录</a>
+		</div>
+		</div>
+	</script>
+        <!--升阶-->
+        <script type="text/html" id="raising_tmpl">
+        <div class="zhaoM1">
+	<div class="exit x"></div>
+	<div class="qiangT pab"><img src="image/sys/peiyang_t.png" /></div>
+	<div class="culT pab bors5">
+            <ul class="culTxt bors5 cor55 fs20">
+                <li id="raising_yb"></li>
+                <li id="raising_rep"></li>
+            </ul>
+	</div>
+	<div class="wBack inpBack"></div>
+	<div class="culM">
+            <div class="culML fl cor55 ls1">
+                <div class="culMLT fs24"><span id="raising_gen_name"></span><span id="raising_gen_star"></span></div>
+                <div class="culMLC pre" id="raising_ball"></div>
+            </div>
+            <div class="culMR fl">
+                <dl id="raising_attr"></dl>
+                <div class="tc"><a class="pub_btn4" id="raising_lvUp">升阶</a></div>
+            </div>
+	</div>
+        <div class="pubPop5 pab ls1" id="raising_page" style="display:none">
+            <div class="pyPL fl bord" id="raising_this_gen"></div>
+            <div class="pyPL fl bord" id="raising_next_gen"></div>
+            <p class="clear"></p>
+            <div class="pyPB bord fs24 tc" id="raising_soul_info"></div>
+	</div>
+        </div>
+        </script>
+	<!--聚魂-->
+	<script type="text/html" id="juhun_tmpl">
+		<div class="zhaoM1">
+		<div class="exit x"></div>
+		<div class="qiangT pab"><img src="image/sys/juhun_t.png" /></div>
+		<div class="wBack inpBack"></div>
+		<div class="pol">
+			<div class="polL fl">
+				<ul class="polLT fs24 cor55" id="jh_num_list">
+					<li><img src="image/sys/l_pol.png" /><p></p></li>
+					<li><img src="image/sys/b_pol.png" /><p></p></li>
+					<li><img src="image/sys/z_pol.png" /><p></p></li>
+					<li><img src="image/sys/h_pol.png" /><p></p></li>
+				</ul>
+				<div class="polLB" id="tuihuan_list">
+					<div class="blueBtn" data-type='1'><p class="stro21 fs28 fl">兑换</p><img src="image/sys/b_pol.png" width="36" height="36"/></div>
+					<div class="purBtn" data-type='2'><p class="stro22 fs28 fl">兑换</p><img src="image/sys/z_pol.png" width="36" height="36"/></div>
+				</div>
+			</div>
+			<div class="polC fl pre" id="hunList">
+				<div class="p14"></div>
+				<div class="p15"></div>
+				<div class="p16"></div>
+				<div class="p17"></div>
+				<div class="p18"></div>
+				<div class="p19"></div>
+			</div>
+			<ul class="polR fr fs24" id="btn_jh_list">
+				<li class="polBtn1 stro23 none" data-type='1'>聚绿魂<br />5千钱币</li>
+				<li class="polBtn2 stro21 none" data-type='2'>聚蓝魂<br />3万钱币</li>
+				<li class="polBtn3 stro22 none" data-type='3'>聚紫魂<br />100元宝</li>
+				<li class="collect stro23 fs36 none" data-type='4'>收取</li>
+			</ul>
+		</div>
+		<div id='ju_convert_tmpl' style='display: none;'>
+			<div class="pubPop4 pab">
+				<p class="fs28 cor55 tc">消耗&nbsp;<span class="cor107">100</span><img width="50" height="50"/>兑换&nbsp;<span class="cor107">1</span><img width="50" height="50"/></p>
+				<div class="tc"><a class="pub_btn">确定</a><a class="pub_btn">关闭</a></div>
+			</div>
+		</div>
+	</div>
+	</script>
+        <!--竞技场-->
+        <script type="text/html" id="arena_tmpl">
+<!--        <div class="zhaoM1">
+        <div class="exit x"></div>
+        <div class="qiangT pab"><img src="image/sys/jjc_t.png" /></div>
+        <div class="arena">
+        <div class="arenaH">
+        <dl class="arenaHL fl">
+        <dt class="fl"><image id="arena_u_img" src="image/game/pic39.png" width="137" height="141" /><p class="arenaOrder pre fs20"><span class="fs26 stro3 cor2" id="arena_u_rank"></span>位</p></dt>
+        <dd class="fl fs22 cor55 shad1 ls1">剩余挑战次数 <span id="arena_u_fight"></span><br/>挑战冷却 <span id="arena_u_cooling">00:00:00</span><br/>结算奖励 <span class="cor1" id="arena_u_reward_colling">00:00:00</span></dd>
+        </dl>
+        <div class="arenaHC fl">
+        <div class="areBnm fl pre tc stro25" id="arena_bless"><img src="image/sys/bnm.png" /></div>
+        <p class="areTxt bors15 fl shad1 ls1 fs22 cor55 tc" id="arena_vip_msg">Vip0奖励加成10%-20%<br/>今日免费2次</p>
+        </div>
+        <div class="arenaHR fl"><a class="rech ls1" id="arena_rank">排行榜</a></div>
+        </div>
+        <div class="arenaF tc ls1" id="arena_rival_list"></div>
+        </div>
+        </div>-->
+            
+        <div class="zhaoM1">
+	<div class="exit x"></div>
+	<div class="qiangT pab"><img src="image/sys/jjc_t.png" /></div>
+	<div class="arena cor55">
+        <ul class="arenaT pab fs22 ls1 shad1">
+            <li>当前排名<span class="stro2 cor2 fs26" id="arena_u_rank"></span>位</li>
+            <li>剩余挑战次数 <span id="arena_u_fight"></span></li>
+            <li>挑战冷却 <span id="arena_u_cooling">00:00:00</span></li>
+            <li>结算奖励 <span id="arena_u_reward_cooling">00:00:00</span></li>
+        </ul>
+        <div class="arenaC">
+            <div class="arenaCL fl fs22 tc shad1">
+                <p id="arena_vip_msg">Vip0可获<br/>10%-20%</p>
+                <p id="arena_bless"><img src="image/sys/bnm.png"><br/><span class="stro11" id="arena_bless_cost">免费</span></p>
+                <p>挑战奖励<br/>+<span class="stro11 fs28" id="arena_bless_eff">10</span>%</p>
+            </div>
+            <div class="arenaHR fl"><a class="rech ls1" id="arena_rank">排行榜</a></div>
+        </div>
+        <div class="arenaF" id="arena_rival_list"></div>
+        </div>
+        </div>
+        </script>
+        <script type="text/html" id="arena_rank_tmpl">
+        <div class="zhaoM">
+        <div class="exit x oneclose"></div>
+        <div class="qiangT pab"><img src="image/sys/phb_t.png" /></div>
+        <div class="charts">
+        <div class="chartsL fl">
+            <ul class="chartsLT stro26">
+            <li>排名</li>
+            <li>姓名</li>
+            <li>等级</li>
+            </ul>
+            <div class="chartsLM bors5">
+                <ul class="chartsList fl" id="arena_rank_list" style="height:379px"></ul>
+                <div class="forLr fl bors5"><p id="arena_r_block"></p></div>
+            </div>
+        </div>
+        <div class="chartsR fl bors5 fs24 ls1" id="arena_award_info"></div>
+        </div>
+        </div>
+        <div class="chartsPop pab bors15" id="arena_record_win" style="display:none">
+            <div class="chartsPT cor111 fs30">挑战记录</div>
+            <div class="exit2" id="arena_record_close"></div>
+            <div class="chartsPL fl" id="arena_record_list" style="height:390px;"></div>
+            <div class="forLr fl bors5"><p id="arena_r_block2"></p></div>
+	</div>
+        </script>
+    <!--竞技场战斗胜利-->
+    <script type="text/html" id="arenaWin_tmpl">
+    <div>
+    <div class="failM pab">
+        <div class="wonT"><img src="image/sys/wonT.png" /></div>
+        <div class="failC bors10">
+            <ul class="wonTop fs20 cor55">
+                <li>钱币 +<span id="arena_d_gold"></span></li>
+                <li>声望 +<span id="arena_d_rep"></span></li>
+                <li>拜神奖励 +<span id="arena_d_bless"></span>%</li>
+            </ul>
+            <div class="failT1 bors5"><img src="image/sys/wpjl.png" /></div>
+            <div class="wonCe fs20">
+            </div>
+            <!--按钮存在一个--><div class="wonB tc"><!--<a class="pub_btn fl">回放</a>--><a class="pub_btn" id="btn_confirm">确认</a></div>
+        </div>
+    </div>
+    </div>
+    </script>
+    <!--战斗失败-->
+    <script type="text/html" id="arenaLost_tmpl">
+    <div class="failM pab">
+        <div class="failT"><img src="image/sys/fail.png" /></div>
+        <div class="failC bors10">
+            <ul class="wonTop fs20 cor55">
+                <li>钱币 +<span id="arena_d_gold"></span></li>
+                <li>声望 +<span id="arena_d_rep"></span></li>
+                <li>拜神奖励 +<span id="arena_d_bless"></span>%</li>
+            </ul>
+            <div class="failT1 bors5"><img src="image/sys/wpjl.png" /></div>
+            <div class="wonCe fs20">
+            </div>
+            <div class="tc"><a class="pub_btn" id="btn_back">确认</a></div>
+        </div>
+    </div>
+    </script>
+</html>
