@@ -7,6 +7,18 @@ var battle={
 	dataStr:{},//战斗数据
 	mustEnd:false,//控制立即结束
 	dialogueB:null,//战斗结束时对话
+	// Android: 把 bid 映射到 sys_formation（脚本敌人阵型）
+	_sysFormations: {
+		1: '5 0 0|0 0 0|0 0 0',
+		2: '2 0 0|0 3 0|0 0 0',
+		3: '3 0 0|0 0 0|0 2 4',
+		4: '5 0 0|0 3 0|0 0 4',
+		5: '5 0 0|0 4 0|0 0 4'
+	},
+	getSysFormation:function(bid){
+		var id = parseInt(bid) || 1;
+		return battle._sysFormations[id] || '1 0 0|0 0 0|0 0 0';
+	},
 	getPreLoadStaticRes:function(){
 		return [
 			'image/game/tx/afury1.png',
@@ -158,10 +170,19 @@ var battle={
 		ResLoad.resourceLoader(battle.getPreLoadStaticRes(),function(){
 			battle.loadWindow(isFirst);
 			battle.bid=bid;
-			$.getJN("http://" + host + "/sgg/i/fight/f.php", {
-				uid:userId,
-				battle_id:bid
-			}, function(data){
+			// Android 改造：绕过 PHP f.php，直接调 SgBridge.battleFight
+			try {
+				var playerFormation = (typeof Buzhen !== 'undefined' && Buzhen.currentFormation)
+					? Buzhen.currentFormation
+					: '2 0 0|0 0 0|0 0 0';
+				var sysIds = battle.getSysFormation(bid);
+				var raw = SgBridge.battleFight(playerFormation, sysIds);
+				var data = JSON.parse(raw);
+				data.st = 0;
+				data.result = data.winner;
+				data.next = null;
+				try { data.user = JSON.parse(SgBridge.userGetInfo()); } catch(e) { data.user = null; }
+
 				if(data.st){
 					if(parseInt(data.st)==1){
 						Common.alert("<span class='cor95 stro13'>体力</span> 不足");
@@ -174,26 +195,25 @@ var battle={
 					return;
 				}
 				if(data.next){
-					if(data.next.type==1){//普通本
-						user.setCurrentBattle(data.next.nborder);//更新前台用户推图进度的记录(针对新手指引)
+					if(data.next.type==1){
+						user.setCurrentBattle(data.next.nborder);
 					}
-					map.refreshMap(data.next);
+					if(typeof map !== 'undefined' && map.refreshMap) map.refreshMap(data.next);
 				}
-				if(tiLi.nextTime<=0){//战斗完后体力值扣除一个，前端开启自动增加功能
+				if(typeof tiLi !== 'undefined' && tiLi.nextTime<=0){
 					tiLi.startRefresh();
 				}
 				battle.dataStr=data;
 				battle.result=data.result;
-				
+
 				if(battle.result=="left"){
-					user.refreshTaskInfo();
-					Buzhen.refreshUserFormation();
+					if(typeof user !== 'undefined' && user.refreshTaskInfo) user.refreshTaskInfo();
+					if(typeof Buzhen !== 'undefined' && Buzhen.refreshUserFormation) Buzhen.refreshUserFormation();
 				}
 				if(data.drop){
 					battle.drop=data.drop;
 				}
-				
-				//更新用户战后数据
+
 				if(data.user){
 					user.refreshUserInfo(data.user);
 				}
@@ -201,7 +221,11 @@ var battle={
 					battle.dialogueB=data.dialogueB;
 				}
 				battle.showBattle(data);
-			},"");
+			} catch(e) {
+				battle.isLoading=false;
+				battle.closeWindow();
+				Common.alert('战斗错误: ' + e.message);
+			}
 		},1);
 		/*
 		var data={"start":{"left":[[0,0,0],[0,{"hp":11740,"fury":50,"img":"liuchan.png","img_small":"liuchanh.jpg"},0],[0,{"hp":800,"fury":50,"img":"zhangfei.png","img_small":"zhangfeih.jpg"},0]],"right":[[0,0,{"hp":2564,"fury":50,"img":"guai.png","img_small":"zabing11.gif"}],[{"hp":2564,"fury":50,"img":"guai.png","img_small":"zabing5.gif"},{"hp":4134,"fury":50,"img":"boss.png","img_small":"zajiang7.gif"},0],[0,0,0]]},"string":[
