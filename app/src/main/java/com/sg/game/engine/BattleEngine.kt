@@ -6,7 +6,7 @@ import com.sg.game.data.Formula
 import com.sg.game.data.NpcStats
 import com.sg.game.data.StaticData
 import com.sg.game.data.TurnSlot
-import kotlin.math.roundToLong
+import kotlin.math.round
 import kotlin.random.Random
 
 /**
@@ -220,7 +220,7 @@ object BattleEngine {
         damage += attacker.level / 10 + 1
 
         val levelDiff = (40 - (attacker.level - defender.level)) / 40.0
-        val levelDamage = roundToLong(levelDiff * attacker.level * Random.nextInt(0, 6))
+        val levelDamage = round(levelDiff * attacker.level * Random.nextInt(0, 6))
         damage += levelDamage.toInt()
 
         val critPer = attacker.crit - defender.critDef + (attacker.level - defender.level) * 10

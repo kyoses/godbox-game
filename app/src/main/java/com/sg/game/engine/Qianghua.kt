@@ -1,7 +1,7 @@
 package com.sg.game.engine
 
 import kotlin.math.pow
-import kotlin.math.roundToLong
+import kotlin.math.round
 
 /**
  * 装备强化公式（翻译自 PHP Qianghua::calculateEquipUpLCost）
@@ -27,7 +27,7 @@ object Qianghua {
             8 -> Pair(100, 300)
             else -> Pair(40, 100)
         }
-        return roundToLong(baseCost * multiplier).toInt() + addConst
+        return round(baseCost * multiplier).toInt() + addConst
     }
 
     /**

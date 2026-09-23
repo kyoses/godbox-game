@@ -1,7 +1,7 @@
 package com.sg.game.data
 
 import net.objecthunter.exp4j.ExpressionBuilder
-import kotlin.math.roundToLong
+import kotlin.math.round
 
 /**
  * formulaValue DSL 解析器（PHP Utils::formulaValue 的 Kotlin 等价）
@@ -27,7 +27,7 @@ object Formula {
         return try {
             val exp = ExpressionBuilder(expr).build()
             val result = exp.evaluate()
-            (roundToLong(result * 1000) / 1000.0)
+            (round(result * 1000.0) / 1000.0)
         } catch (e: Exception) {
             0.0
         }

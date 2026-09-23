@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.sg.game.engine.BattleManager
 import com.sg.game.engine.DatabaseHelper
-import com.sg.game.engine.StaticData
+import com.sg.game.data.StaticData
 import org.json.JSONObject
 
 /**
