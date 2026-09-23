@@ -3,126 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>三国霸业 · 离线版 v2</title>
+<title>三国霸业 · 离线版</title>
 <style>
-  body{margin:0;padding:0;background:linear-gradient(135deg,#3a0000 0%,#1a0000 50%,#000 100%);
-    color:#d4af37;font-family:"STKaiti","KaiTi",serif;min-height:100vh;display:flex;
-    flex-direction:column;align-items:center;padding:20px;}
-  h1{font-size:36px;margin:20px 0 12px;text-shadow:2px 2px 6px #000;letter-spacing:6px;}
-  .sub{font-size:14px;color:#aaa;margin-bottom:24px;}
+  body{margin:0;padding:0;background:linear-gradient(180deg,#3a0000 0%,#1a0000 50%,#000 100%);
+    color:#d4af37;font-family:"STKaiti","KaiTi",serif;min-height:100vh;}
+  .topbar{height:48px;background:rgba(0,0,0,.7);display:flex;align-items:center;
+    padding:0 16px;border-bottom:2px solid #8b0000;}
+  .topbar h1{margin:0;font-size:18px;color:#d4af37;}
+  .topbar .user{margin-left:auto;font-size:14px;color:#aaa;}
+  .topbar .gold{color:#d4af37;}
+  .container{padding:16px;display:flex;flex-direction:column;align-items:center;}
   .info{background:rgba(0,0,0,.55);border:2px solid #d4af37;border-radius:8px;
-    padding:16px;max-width:520px;line-height:1.7;font-size:13px;margin-bottom:16px;width:90%;}
+    padding:16px;max-width:560px;line-height:1.8;font-size:13px;margin-bottom:16px;width:90%;}
   .panel{background:rgba(40,0,0,.5);border:1px solid #d4af37;border-radius:6px;
-    padding:14px;margin:8px 0;width:90%;max-width:520px;}
-  .btn{display:block;margin:8px 0;padding:12px;background:#8b0000;color:#fff;
-    border:1px solid #d4af37;border-radius:4px;font-size:15px;cursor:pointer;
-    font-family:inherit;width:100%;}
+    padding:14px;margin:8px 0;width:90%;max-width:560px;}
+  .panel h2{margin:0 0 10px;font-size:16px;color:#d4af37;}
+  .btn{display:block;margin:6px 0;padding:10px;background:#8b0000;color:#fff;
+    border:1px solid #d4af37;border-radius:4px;font-size:14px;cursor:pointer;
+    font-family:inherit;width:100%;text-align:center;}
   .btn:hover{background:#a00;}
+  .btn-gold{background:#5a4a1a;color:#d4af37;}
   .log{font-size:11px;color:#aaa;margin-top:8px;font-family:monospace;
-    max-height:140px;overflow-y:auto;background:#000;padding:8px;border-radius:4px;}
-  pre{font-size:11px;color:#5f5;margin:0;white-space:pre-wrap;word-break:break-all;}
-  .ok{color:#5f5;}.err{color:#f55;}
+    max-height:200px;overflow-y:auto;background:#000;padding:8px;border-radius:4px;}
+  pre{font-size:11px;margin:0;white-space:pre-wrap;word-break:break-all;color:#5f5;}
+  .row{display:flex;gap:8px;}
+  .row .btn{flex:1;}
+  .scrollable{max-height:300px;overflow-y:auto;background:#000;padding:8px;
+    border-radius:4px;margin-top:8px;}
+  .npc-item{padding:8px;border-bottom:1px solid #444;color:#ccc;}
+  .npc-item b{color:#d4af37;}
+  .stat{margin:8px 0;padding:8px;background:#000;border-radius:4px;color:#5f5;}
+  input{padding:6px;background:#000;color:#d4af37;border:1px solid #8b0000;
+    font-family:monospace;font-size:13px;}
+  select{padding:6px;background:#000;color:#d4af37;border:1px solid #8b0000;}
 </style>
 </head>
 <body>
-  <h1>三国霸业</h1>
-  <div class="sub">离线版 v2 · 战斗引擎 Kotlin 化</div>
-
-  <div class="info">
-    <b>核心功能已迁移到 Android 原生 Kotlin：</b><br>
-    ✅ 战斗引擎（Fight → BattleEngine.kt）<br>
-    ✅ 装备强化（Qianghua → Qianghua.kt）<br>
-    ✅ 用户/武将/装备/任务数据持久化（SQLite）<br>
-    ✅ 公式 DSL（formulaValue → Formula.kt + exp4j）<br><br>
-    <b>通过 SgBridge JS 接口调用</b>
+  <div class="topbar">
+    <h1>三国霸业</h1>
+    <div class="user">
+      <span id="userName">主公</span> · <span class="gold" id="userGold">5000</span> 金
+    </div>
   </div>
 
-  <div class="panel">
-    <b>🎯 战斗演示</b>
-    <button class="btn" onclick="testBattle()">发起战斗（关羽 vs 曹操）</button>
-    <div class="log" id="log1"><pre>等待测试...</pre></div>
-  </div>
+  <div class="container">
 
-  <div class="panel">
-    <b>👤 用户信息</b>
-    <button class="btn" onclick="testUser()">获取玩家信息</button>
-    <div class="log" id="log2"><pre>等待测试...</pre></div>
-  </div>
+    <div class="info">
+      <b>✅ 离线模式已激活</b><br>
+      所有 PHP 后端已 Kotlin 化。<br>
+      数据存于本地 SQLite。<br>
+      战斗引擎已就绪。
+    </div>
 
-  <div class="panel">
-    <b>⚔ 武将列表</b>
-    <button class="btn" onclick="testNpc()">查询武将列表</button>
-    <button class="btn" onclick="testNpcAdd(3)">招募张飞 (id=3)</button>
-    <div class="log" id="log3"><pre>等待测试...</pre></div>
-  </div>
+    <div class="panel">
+      <h2>👤 我的信息</h2>
+      <div class="stat" id="myInfo">加载中...</div>
+      <button class="btn" onclick="refreshUser()">刷新</button>
+    </div>
 
-  <div class="panel">
-    <b>🛡 装备</b>
-    <button class="btn" onclick="testEquipAdd(1)">获得 青锋剑</button>
-    <button class="btn" onclick="testUpgrade()">升级第一件装备 (type=1)</button>
-    <div class="log" id="log4"><pre>等待测试...</pre></div>
-  </div>
+    <div class="panel">
+      <h2>⚔ 武将 (<span id="npcCount">0</span>)</h2>
+      <button class="btn btn-gold" onclick="recruitAll()">招募初始 4 名武将</button>
+      <div class="scrollable" id="npcList"></div>
+    </div>
 
-  <div class="panel">
-    <b>📋 任务</b>
-    <button class="btn" onclick="testTask()">查看任务列表</button>
-    <button class="btn" onclick="testTaskComplete(1)">完成任务 1</button>
-    <div class="log" id="log5"><pre>等待测试...</pre></div>
-  </div>
+    <div class="panel">
+      <h2>🛡 装备</h2>
+      <button class="btn btn-gold" onclick="addEquip()">获得一件装备</button>
+      <div class="scrollable" id="equipList"></div>
+    </div>
 
-  <div class="panel">
-    <b>🧮 公式 DSL</b>
-    <button class="btn" onclick="testFormula()">计算强化费用 (level=10, type=1)</button>
-    <div class="log" id="log6"><pre>等待测试...</pre></div>
+    <div class="panel">
+      <h2>🎯 战斗</h2>
+      <p style="margin:4px 0;">我方阵型（npcId 之间用空格隔开，每行用|隔开）：</p>
+      <input id="field1" value="2 0 0|0 0 0|0 0 0" style="width:100%;">
+      <p style="margin:8px 0 4px;">敌方阵型：</p>
+      <input id="field2" value="1 0 0|0 0 0|0 0 0" style="width:100%;">
+      <button class="btn" onclick="startBattle()" style="margin-top:8px;">⚔ 开始战斗</button>
+      <div class="log"><pre id="battleLog">等待战斗...</pre></div>
+    </div>
+
+    <div class="panel">
+      <h2>📋 任务</h2>
+      <button class="btn" onclick="loadTasks()">刷新任务</button>
+      <div class="scrollable" id="taskList"></div>
+    </div>
+
+    <div class="panel">
+      <h2>🧮 强化费用计算</h2>
+      <input id="qLvl" value="10" style="width:60px;">
+      <select id="qType">
+        <option value="1">武器 (×40+100)</option>
+        <option value="2">甲 (×20+50)</option>
+        <option value="3">盔 (×20+50)</option>
+        <option value="4">鞋 (×40+100)</option>
+        <option value="6">泛宝 (×60+150)</option>
+        <option value="8">法宝 (×100+300)</option>
+      </select>
+      <button class="btn" onclick="calcQianghua()">计算</button>
+      <div class="log"><pre id="qLog">输入等级点击"计算"</pre></div>
+    </div>
+
+    <div class="panel">
+      <h2>🔧 数据库</h2>
+      <button class="btn" onclick="resetDb()" style="background:#5a1a1a;">⚠ 清空所有数据</button>
+      <div class="log"><pre id="dbLog">无操作</pre></div>
+    </div>
+
   </div>
 
   <script>
-    function log(id, msg, ok) {
-      var el = document.getElementById(id);
-      el.innerHTML = '<pre class="' + (ok ? 'ok' : 'err') + '">' + msg + '</pre>';
+    function $(id) { return document.getElementById(id); }
+
+    function refreshUser() {
+      try {
+        var json = JSON.parse(SgBridge.userGetInfo());
+        $('userName').textContent = json.name;
+        $('userGold').textContent = json.gold;
+        $('myInfo').innerHTML =
+          '姓名：' + json.name + '<br>' +
+          '金币：' + json.gold + '<br>' +
+          '等级：' + json.level + ' (经验 ' + json.exp + ')<br>' +
+          '体力：' + json.stamina;
+      } catch(e) { $('myInfo').textContent = '错误: ' + e.message; }
     }
-    function safe(fn) {
-      try { return fn(); } catch(e) { return 'error: ' + e.message; }
+
+    function recruitAll() {
+      // 招募初始 4 名武将（曹操/关羽/张飞/赵云）
+      [1, 2, 3, 4].forEach(function(id) { SgBridge.npcAdd(id); });
+      loadNpcs();
+      alert('已招募曹操、关羽、张飞、赵云');
     }
-    function testBattle() {
-      // 玩家阵型：关羽(id=2)放中军；敌方：曹操(id=1)在前
-      var r = SgBridge.battleFight('0 2 0|0 0 0|0 0 0', '1 0 0|0 0 0|0 0 0');
-      log('log1', r, r.indexOf('winner') >= 0);
+
+    function loadNpcs() {
+      var list = JSON.parse(SgBridge.npcList());
+      $('npcCount').textContent = list.length;
+      var html = '';
+      list.forEach(function(n) {
+        html += '<div class="npc-item">' +
+                '<b>' + n.name + '</b> Lv.' + n.level +
+                ' (阵型位:' + (n.position < 0 ? '未上阵' : n.position) + ')' +
+                '</div>';
+      });
+      $('npcList').innerHTML = html || '<div style="color:#888">还没有武将</div>';
     }
-    function testUser() {
-      var r = SgBridge.userGetInfo();
-      log('log2', r, r.indexOf('name') >= 0);
+
+    function addEquip() {
+      // 随机给一个装备
+      var eid = Math.floor(Math.random() * 6) + 1;
+      SgBridge.equipAdd(eid);
+      loadEquips();
     }
-    function testNpc() {
-      var r = SgBridge.npcList();
-      log('log3', r, true);
+
+    function loadEquips() {
+      var list = JSON.parse(SgBridge.equipList());
+      var html = '';
+      list.forEach(function(e, idx) {
+        html += '<div class="npc-item">装备 #' + e.equip_id +
+                ' 强化+' + e.up_level + '</div>';
+      });
+      $('equipList').innerHTML = html || '<div style="color:#888">还没有装备</div>';
     }
-    function testNpcAdd(id) {
-      var r = SgBridge.npcAdd(id);
-      log('log3', '添加结果: ' + r + '\n' + SgBridge.npcList(), r);
+
+    function startBattle() {
+      var f1 = $('field1').value;
+      var f2 = $('field2').value;
+      try {
+        var json = JSON.parse(SgBridge.battleFight(f1, f2));
+        var lines = ['胜方：' + json.winner, '回合日志：'];
+        if (json.log) {
+          json.log.forEach(function(l) {
+            lines.push('  #' + l.turn + ' 攻' + l.attacker + ' → 防' + l.defender + ' 伤害' + l.damage);
+          });
+        }
+        // 显示左/右双方剩余 HP
+        lines.push('');
+        lines.push('--- 左方 ---');
+        if (json.left) {
+          json.left.forEach(function(row) {
+            row.forEach(function(c) {
+              lines.push(c ? c.name + ': HP ' + c.hp + '/' + c.hpMax : '空');
+            });
+          });
+        }
+        lines.push('--- 右方 ---');
+        if (json.right) {
+          json.right.forEach(function(row) {
+            row.forEach(function(c) {
+              lines.push(c ? c.name + ': HP ' + c.hp + '/' + c.hpMax : '空');
+            });
+          });
+        }
+        $('battleLog').textContent = lines.join('\n');
+      } catch(e) {
+        $('battleLog').textContent = '错误: ' + e.message;
+      }
     }
-    function testEquipAdd(id) {
-      var r = SgBridge.equipAdd(id);
-      log('log4', '添加装备结果: ' + r + '\n' + SgBridge.equipList(), r);
+
+    function loadTasks() {
+      var list = JSON.parse(SgBridge.taskList());
+      var html = '';
+      list.forEach(function(t) {
+        var status = t.status === 1 ? '✅' : '⏳';
+        var btn = t.status === 0
+          ? ' <button class="btn" style="display:inline-block;width:auto;padding:2px 8px;font-size:11px;" onclick="completeTask(' + t.task_id + ')">完成</button>'
+          : '';
+        html += '<div class="npc-item">' + status + ' ' + t.title + btn + '</div>';
+      });
+      $('taskList').innerHTML = html || '<div style="color:#888">没有任务</div>';
     }
-    function testUpgrade() {
-      // 假设数据库中有 id=1 的装备 (up_level=0, type=1)
-      var gold = 5000;
-      var r = SgBridge.equipUpgrade(1, 1, gold);
-      log('log4', '强化结果: ' + r, r);
-    }
-    function testTask() {
-      var r = SgBridge.taskList();
-      log('log5', r, r.indexOf('task_id') >= 0);
-    }
-    function testTaskComplete(id) {
+
+    function completeTask(id) {
       SgBridge.taskComplete(id);
-      log('log5', '完成任务 ' + id + '\n' + SgBridge.taskList(), true);
+      loadTasks();
+      refreshUser();
     }
-    function testFormula() {
-      var r = SgBridge.qianghuaCalc(10, 1);
-      log('log6', 'level=10, type=1 强化费用: ' + r + ' 金币\n' + '公式: pow(10,3.25)/30 + 10*5 = 707, *70 + 100 = ' + Math.round((Math.pow(10, 3.25)/30 + 50) * 70) + 100, true);
+
+    function calcQianghua() {
+      var lvl = parseInt($('qLvl').value);
+      var type = parseInt($('qType').value);
+      var cost = SgBridge.qianghuaCalc(lvl, type);
+      $('qLog').textContent = 'level=' + lvl + ' type=' + type + ' → ' + cost + ' 金';
     }
+
+    function resetDb() {
+      if (confirm('确定清空所有数据？')) {
+        SgBridge.resetGame();
+        $('dbLog').textContent = '已清空，刷新页面重启';
+      }
+    }
+
+    // 自动加载
+    setTimeout(function() {
+      refreshUser();
+      loadNpcs();
+      loadEquips();
+      loadTasks();
+    }, 100);
   </script>
 </body>
 </html>

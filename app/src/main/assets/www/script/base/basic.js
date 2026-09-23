@@ -61,17 +61,27 @@ var transitionEnd=(
 );
 
 //jQuery 扩展(获取数据时添加loading提示)
+// Android 改造：当 URL 包含 sgg/i/ 时，走 SgBridge（Kotlin 后端）
+// 其他走真实 HTTP
 $.getJN=function(url,obj,callBack,id){
 	var param={hasData:false};
-	/*
-	$.getJSON(url, obj, function(data){
-		param.hasData=true;
-		closeLoading2();
-		if(data&&data.user){//刷新主界面用户信息,包括金币、元宝、经验等
-			user.refreshUserInfo(data.user);
+
+	// Android SgBridge 路由
+	if(typeof SgBridge !== 'undefined' && url.indexOf('sgg/i/') >= 0) {
+		try {
+			var data = routeToSgBridge(url, obj);
+			param.hasData = true;
+			closeLoading2();
+			if(data && data.user){
+				user.refreshUserInfo(data.user);
+			}
+			callBack(data);
+		} catch(e) {
+			closeLoading2(1);
 		}
-		callBack(data);
-	});*/
+		return;
+	}
+
 	var r_num = new Date().getTime().toString();
 	setTimeout(showLoading,800,param);
 	$.ajax({
@@ -86,7 +96,7 @@ $.getJN=function(url,obj,callBack,id){
 				data=$.parseJSON(data2);
 				param.hasData=true;
 				closeLoading2();
-				if(data&&data.user){//刷新主界面用户信息,包括金币、元宝、经验等
+				if(data&&data.user){
 					user.refreshUserInfo(data.user);
 				}
 			}
@@ -96,6 +106,43 @@ $.getJN=function(url,obj,callBack,id){
 			closeLoading2(1);
 		}
 	});
+}
+
+// 路由表：URL → SgBridge 方法
+function routeToSgBridge(url, obj) {
+	// 战斗
+	if(url.match(/sgg\/i\/fight\/(f|s)\.php/)) {
+		var formation = obj.field || obj.formation || '0,0,0|0,0,0|0,0,0';
+		var sysIds = obj.sys || obj.sys_ids || '0,0,0|0,0,0|0,0,0';
+		return $.parseJSON(SgBridge.battleFight(formation, sysIds));
+	}
+	// 用户
+	if(url.match(/sgg\/i\/user\/(z|u|get|info)\.php/)) {
+		return $.parseJSON(SgBridge.userGetInfo());
+	}
+	// 武将
+	if(url.match(/sgg\/i\/npc\/list\.php/)) {
+		return {npcs: $.parseJSON(SgBridge.npcList())};
+	}
+	// 装备
+	if(url.match(/sgg\/i\/equip\/list\.php/)) {
+		return {equips: $.parseJSON(SgBridge.equipList())};
+	}
+	// 任务
+	if(url.match(/sgg\/i\/task\/list\.php/)) {
+		return {tasks: $.parseJSON(SgBridge.taskList())};
+	}
+	if(url.match(/sgg\/i\/task\/complete\.php/)) {
+		SgBridge.taskComplete(parseInt(obj.task_id || obj.id));
+		return {ok:true};
+	}
+	// 强化
+	if(url.match(/sgg\/i\/qianghua\//)) {
+		var cost = SgBridge.qianghuaCalc(parseInt(obj.level||0), parseInt(obj.type||1));
+		return {cost: cost, ok: true};
+	}
+	// 默认：返回空成功
+	return {ok: true};
 }
 function showLoading(param){
 	if(!param.hasData){
