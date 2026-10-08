@@ -1,18 +1,15 @@
 package com.sg.game
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.sg.game.data.StaticData
 import com.sg.game.engine.EquipManager
-import com.sg.game.engine.NpcManager
 import com.sg.game.engine.Qianghua
-import com.sg.game.engine.StaticData
-import com.sg.game.engine.TaskManager
 
 /**
  * 装备 + 强化界面
@@ -36,16 +33,17 @@ class EquipActivity : AppCompatActivity() {
     private fun refresh() {
         val list = EquipManager.listForPlayer(this)
         val items = list.map { entry ->
-            val id = entry["equip_id"] as Long
-            val lv = entry["up_level"] as Long
-            val name = (StaticData.getEquipTemplate(id.toInt())?.optString("name", "装备$id")) ?: "装备$id"
+            val id = entry["equip_id"] as Int
+            val lv = entry["up_level"] as Int
+            val name = (StaticData.getEquipTemplate(id)?.optString("name", "装备$id")) ?: "装备$id"
             "$name (强化 +$lv)"
         }.ifEmpty { listOf("（空）") }
         findViewById<android.widget.ListView>(R.id.lvList).adapter =
             ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
         findViewById<android.widget.ListView>(R.id.lvList).setOnItemClickListener { _, _, pos, _ ->
             if (list.isNotEmpty() && pos < list.size) {
-                showUpgradeDialog(list[pos], pos + 1)
+                val dbId = (list[pos]["db_id"] as? Int) ?: (pos + 1).toLong()
+                showUpgradeDialog(list[pos], dbId)
             }
         }
     }
@@ -59,8 +57,8 @@ class EquipActivity : AppCompatActivity() {
     }
 
     private fun showUpgradeDialog(entry: Map<String, Any>, dbId: Long) {
-        val equipId = (entry["equip_id"] as Long).toInt()
-        val curLv = (entry["up_level"] as Long).toInt()
+        val equipId = entry["equip_id"] as Int
+        val curLv = entry["up_level"] as Int
         val type = StaticData.getEquipTemplate(equipId)?.optInt("type", 1) ?: 1
         val cost = Qianghua.calculateCost(curLv, type)
         AlertDialog.Builder(this)
