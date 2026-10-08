@@ -6,4 +6,10 @@
     <color name="ic_launcher_background">#8B0000</color>
     <color name="bg_dark">#1A0000</color>
     <color name="text_primary">#FFFFFF</color>
+    <color name="ink_gold">#D4AF37</color>
+    <color name="silk_bg">#F5E6C8</color>
+    <color name="ink_red">#B71C1C</color>
+    <color name="ink_black">#1B1B1B</color>
+    <color name="ink_cyan">#37474F</color>
+    <color name="panel_bg">#CC1B1B1B</color>
 </resources>
