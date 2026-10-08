@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.sg.game.data.NpcStats
 import com.sg.game.engine.NpcManager
-import com.sg.game.engine.StaticData
+import com.sg.game.data.StaticData
 import com.sg.game.engine.DatabaseHelper
 
 /**

@@ -8,7 +8,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import com.sg.game.data.NpcStats
-import com.sg.game.engine.StaticData
+import com.sg.game.data.StaticData
 
 /**
  * 战斗阵型视图：左 3x3（玩家）vs 右 3x3（敌人），中间战斗日志
