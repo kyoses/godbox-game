@@ -42,8 +42,9 @@ class EquipActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
         findViewById<android.widget.ListView>(R.id.lvList).setOnItemClickListener { _, _, pos, _ ->
             if (list.isNotEmpty() && pos < list.size) {
-                val dbId = (list[pos]["db_id"] as? Int) ?: (pos + 1).toLong()
-                showUpgradeDialog(list[pos], dbId)
+                val entry = list[pos]
+                val dbId = (entry["db_id"] as? Int)?.toLong() ?: (pos + 1).toLong()
+                showUpgradeDialog(entry, dbId)
             }
         }
     }
