@@ -1,67 +1,100 @@
 package com.sg.game
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sg.game.engine.BattleManager
-import com.sg.game.engine.DatabaseHelper
+import com.sg.game.data.NpcStats
 import com.sg.game.data.StaticData
-import org.json.JSONObject
+import com.sg.game.engine.BattleEngine
+import com.sg.game.engine.BattleManager
+import com.sg.game.ui.BattleFormationView
 
 /**
- * 原生战斗界面（不通过 WebView）
- * 从 MainActivity 接 formation + sysIds，运行 BattleEngine，展示战报。
+ * 原生战斗 Activity：
+ * - 玩家阵型（取自 c_npc.position）
+ * - 敌方阵型（硬编码 5 个关卡）
+ * - 点击"开始战斗"调用 BattleEngine
+ * - 显示战报日志
  */
 class BattleActivity : AppCompatActivity() {
 
+    private lateinit var battleView: BattleFormationView
+    private lateinit var tvLog: TextView
+
+    // 关卡：敌方阵型（5 个）
+    private val stages = arrayOf(
+        "1 0 0|0 0 0|0 0 0" to "第一章·黄巾之乱",
+        "2 0 0|0 3 0|0 0 0" to "第二章·怒鞭督邮",
+        "3 0 0|0 0 0|0 2 4" to "第三章·三英战吕布",
+        "5 0 0|0 3 0|0 0 4" to "第四章·连营之计",
+        "5 0 0|0 4 0|0 0 4" to "第五章·三顾茅庐"
+    )
+
+    private var currentStage = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val formation = intent.getStringExtra(EXTRA_FORMATION) ?: "0,0,0|0,0,0|0,0,0"
-        val sysIds = intent.getStringExtra(EXTRA_SYS_IDS) ?: "0,0,0|0,0,0|0,0,0"
+        setContentView(R.layout.activity_battle)
 
         StaticData.ensureLoaded(this)
-        DatabaseHelper.get(this)
 
-        val result = BattleManager.fightToJson(formation, sysIds)
-        val json = JSONObject(result)
+        battleView = findViewById(R.id.battleView)
+        tvLog = findViewById(R.id.tvLog)
 
-        // 简单布局展示战报
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-        }
-        val title = TextView(this).apply {
-            text = "战斗结果：${json.optString("winner")} 胜"
-            textSize = 24f
-        }
-        root.addView(title)
+        findViewById<TextView>(R.id.tvTitle).text = stages[currentStage].second
+        loadStage(currentStage)
 
-        val log = json.optJSONArray("log")
-        if (log != null) {
-            for (i in 0 until log.length()) {
-                val entry = log.getJSONObject(i)
-                val tv = TextView(this).apply {
-                    text = "第${entry.optInt("turn")}回合: 攻${entry.optInt("attacker")} → 防${entry.optInt("defender")} 伤害${entry.optInt("damage")}"
-                    textSize = 16f
-                }
-                root.addView(tv)
+        findViewById<Button>(R.id.btnStart).setOnClickListener { startBattle() }
+        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+    }
+
+    private fun loadStage(stage: Int) {
+        val (sysIds, title) = stages[stage]
+        val left = BattleEngine.buildTeam("2 0 0|0 0 0|0 0 0", level = 10)  // 玩家关羽
+        val right = BattleEngine.buildTeam(sysIds, level = 5)
+        battleView.refresh(left, right)
+        tvLog.text = "$title\n准备就绪"
+    }
+
+    private fun startBattle() {
+        val (sysIds, title) = stages[currentStage]
+        val left = BattleEngine.buildTeam("2 0 0|0 0 0|0 0 0", level = 10)
+        val right = BattleEngine.buildTeam(sysIds, level = 5)
+
+        // 重新 build（每次攻击血量会变）
+        val raw = BattleManager.fightToJson("2 0 0|0 0 0|0 0 0", sysIds)
+        val sb = StringBuilder()
+        sb.appendLine("=== $title ===")
+
+        // 简单解析 log
+        val logPattern = "\"log\":\\[(.*?)\\]".toRegex()
+        val match = logPattern.find(raw)
+        if (match != null) {
+            val entries = match.groupValues[1].split("},").take(10)
+            for (e in entries) {
+                val t = "\"turn\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
+                val a = "\"attacker\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
+                val d = "\"defender\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
+                val dmg = "\"damage\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "0"
+                sb.appendLine("第${t}合: 攻${a} → 防${d} (伤害$dmg)")
             }
         }
 
-        val btn = Button(this).apply {
-            text = "返回"
-            setOnClickListener { finish() }
+        val winner = "\"winner\":\"(left|right|draw)\"".toRegex().find(raw)?.groupValues?.get(1) ?: "?"
+        sb.appendLine()
+        sb.appendLine(">>> $title 结束: $winner 胜 <<<")
+
+        tvLog.text = sb.toString()
+        battleView.refresh(left, right)
+
+        if (winner == "left") {
+            currentStage = minOf(currentStage + 1, stages.size - 1)
+            findViewById<TextView>(R.id.tvTitle).text = stages[currentStage].second
+            Toast.makeText(this, "胜利！进入${stages[currentStage].second}", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "失败，请调整阵容再战", Toast.LENGTH_SHORT).show()
         }
-        root.addView(btn)
-
-        setContentView(root)
-    }
-
-    companion object {
-        const val EXTRA_FORMATION = "formation"
-        const val EXTRA_SYS_IDS = "sys_ids"
     }
 }
