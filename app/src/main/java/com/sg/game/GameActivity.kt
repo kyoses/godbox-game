@@ -83,13 +83,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showRecruitDialog() {
-        val names = arrayOf("曹操", "关羽", "张飞", "赵云", "诸葛亮", "刘备",
-            "孙权", "周瑜", "吕布", "貂蝉", "吕布2", "典韦")
-        val ids = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 11)
+        val templates = StaticData.allNpcTemplates.take(12)
+        val names = templates.map { it.name }.toTypedArray()
         AlertDialog.Builder(this)
-            .setTitle("招募初始武将")
+            .setTitle("招募武将")
             .setItems(names) { _, which ->
-                NpcManager.addNpc(this, ids[which])
+                NpcManager.addNpc(this, templates[which].id)
                 Toast.makeText(this, "招募 ${names[which]} 成功", Toast.LENGTH_SHORT).show()
                 formationView.invalidate()
             }

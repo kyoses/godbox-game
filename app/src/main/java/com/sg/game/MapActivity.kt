@@ -26,13 +26,9 @@ class MapActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
 
         val lv = findViewById<android.widget.ListView>(R.id.lvList)
-        val items = arrayOf(
-            "第一章·黄巾之乱 (Lv.1)",
-            "第二章·怒鞭督邮 (Lv.5)",
-            "第三章·三英战吕布 (Lv.10)",
-            "第四章·连营之计 (Lv.15)",
-            "第五章·三顾茅庐 (Lv.20)"
-        )
+        val items = StaticData.allBattleTemplates.sortedBy { it.dispOrder }
+            .map { "${it.name} (Lv.${it.dispOrder * 5})" }
+            .toTypedArray()
         lv.adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
         lv.setOnItemClickListener { _, _, pos, _ ->
             launchBattle(pos)

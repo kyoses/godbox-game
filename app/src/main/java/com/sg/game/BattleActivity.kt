@@ -23,14 +23,11 @@ class BattleActivity : AppCompatActivity() {
     private lateinit var battleView: BattleFormationView
     private lateinit var tvLog: TextView
 
-    // 关卡：敌方阵型（5 个）
-    private val stages = arrayOf(
-        "1 0 0|0 0 0|0 0 0" to "第一章·黄巾之乱",
-        "2 0 0|0 3 0|0 0 0" to "第二章·怒鞭督邮",
-        "3 0 0|0 0 0|0 2 4" to "第三章·三英战吕布",
-        "5 0 0|0 3 0|0 0 4" to "第四章·连营之计",
-        "5 0 0|0 4 0|0 0 4" to "第五章·三顾茅庐"
-    )
+    // 关卡：从 StaticData.allBattleTemplates 读取
+    private val stages: List<Pair<String, String>> by lazy {
+        StaticData.allBattleTemplates.sortedBy { it.dispOrder }
+            .map { it.sysFormation to it.name }
+    }
 
     private var currentStage = 0
 
