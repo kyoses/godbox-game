@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ink_black">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ink_red"
+        android:padding="12dp"
+        android:text="阵型调整"
+        android:textColor="@color/ink_gold"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.sg.game.ui.FormationView
+        android:id="@+id/formationView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/btnClearFormation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="清空阵型"
+            android:textColor="@color/silk_bg"
+            android:background="@drawable/btn_round_red" />
+
+        <Button
+            android:id="@+id/btnAutoFormation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="自动排列"
+            android:textColor="@color/ink_gold"
+            android:background="@drawable/btn_round_gold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="武将列表（点击上阵/下阵）"
+        android:textColor="@color/ink_gold"
+        android:textSize="14sp" />
+
+    <ListView
+        android:id="@+id/lvNpcs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
+        android:text="返回"
+        android:textColor="@color/ink_gold"
+        android:background="@drawable/btn_round_gold" />
+
+</LinearLayout>

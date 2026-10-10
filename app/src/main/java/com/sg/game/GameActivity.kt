@@ -44,6 +44,9 @@ class GameActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnMap).setOnClickListener {
             startActivity(Intent(this, MapActivity::class.java))
         }
+        findViewById<Button>(R.id.btnFormation).setOnClickListener {
+            startActivity(Intent(this, FormationActivity::class.java))
+        }
         findViewById<Button>(R.id.btnEquip).setOnClickListener {
             startActivity(Intent(this, EquipActivity::class.java))
         }

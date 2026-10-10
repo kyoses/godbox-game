@@ -37,6 +37,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".FormationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|uiMode|smallestScreenSize|density"
+            android:exported="false" />
+
+        <activity
             android:name=".EquipActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|uiMode|smallestScreenSize|density"
             android:exported="false" />

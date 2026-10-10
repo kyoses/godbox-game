@@ -3,62 +3,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/primary_dark">
+    android:background="@color/ink_black">
 
-    <!-- 顶栏：标题 + 时间 + 资源 -->
+    <!-- 顶栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:orientation="horizontal"
+        android:background="@color/ink_red"
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="三国霸业 · 永安宫"
             android:textColor="@color/accent"
             android:textSize="20sp"
             android:textStyle="bold"
             android:fontFamily="serif" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="6dp">
-
-            <TextView
-                android:id="@+id/tvGold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="💰 0"
-                android:textColor="@color/accent"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/tvExp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="⭐ 等级 1"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/tvStamina"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="⚡ 体力 100"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="存"
+            android:textColor="@color/silk_bg"
+            android:textSize="14sp"
+            android:background="@drawable/btn_round_red" />
     </LinearLayout>
 
-    <!-- 武将阵型（中央） -->
+    <!-- 资源条 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/ink_cyan"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvGold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="💰 0"
+            android:textColor="@color/accent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvExp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⭐ 等级 1"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvStamina"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚡ 体力 100"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- 阵型（中央） -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -69,7 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的阵型"
+            android:text="我的阵型（点击格子查看/下阵）"
             android:textColor="@color/accent"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -81,7 +94,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <!-- 底部 4 按钮 -->
+    <!-- 底部 5 按钮 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,14 +112,24 @@
             android:background="@drawable/btn_round_red" />
 
         <Button
+            android:id="@+id/btnFormation"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:text="⚔ 阵型"
+            android:textColor="@color/ink_gold"
+            android:background="@drawable/btn_round_gold" />
+
+        <Button
             android:id="@+id/btnEquip"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_margin="2dp"
             android:text="🛡 装备"
-            android:textColor="@color/ink_gold"
-            android:background="@drawable/btn_round_gold" />
+            android:textColor="@color/silk_bg"
+            android:background="@drawable/btn_round_red" />
 
         <Button
             android:id="@+id/btnTask"
@@ -115,8 +138,8 @@
             android:layout_weight="1"
             android:layout_margin="2dp"
             android:text="📋 任务"
-            android:textColor="@color/silk_bg"
-            android:background="@drawable/btn_round_red" />
+            android:textColor="@color/ink_gold"
+            android:background="@drawable/btn_round_gold" />
 
         <Button
             android:id="@+id/btnRecruit"
@@ -124,9 +147,9 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            android:text="⚔ 招募"
-            android:textColor="@color/ink_gold"
-            android:background="@drawable/btn_round_gold" />
+            android:text="👥 招募"
+            android:textColor="@color/silk_bg"
+            android:background="@drawable/btn_round_red" />
     </LinearLayout>
 
 </LinearLayout>

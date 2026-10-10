@@ -14,11 +14,13 @@ object NpcManager {
         val cursor = db.rawQuery("SELECT * FROM c_npc", null)
         val list = mutableListOf<Map<String, Any>>()
         while (cursor.moveToNext()) {
+            val dbId = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
             val npcId = cursor.getInt(cursor.getColumnIndexOrThrow("npc_id"))
             val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
             val level = cursor.getInt(cursor.getColumnIndexOrThrow("level"))
             val position = cursor.getInt(cursor.getColumnIndexOrThrow("position"))
             list.add(mapOf(
+                "db_id" to dbId,
                 "npc_id" to npcId,
                 "name" to name,
                 "level" to level,
@@ -49,18 +51,25 @@ object NpcManager {
     }
 
     /**
-     * 设置阵型位置 0-8
+     * 设置阵型位置 0-8（按 npc_id 业务键）
      */
-    fun setPosition(ctx: Context, npcDbId: Long, position: Int) {
+    fun setPosition(ctx: Context, npcId: Int, position: Int) {
         val db = DatabaseHelper.get(ctx).writableDatabase
-        db.execSQL("UPDATE c_npc SET position = ? WHERE id = ?", arrayOf(position, npcDbId))
+        db.execSQL("UPDATE c_npc SET position = ? WHERE npc_id = ?", arrayOf(position, npcId))
     }
 
     /**
-     * 升 1 级
+     * 取下（pos=-1）
      */
-    fun addExp(ctx: Context, npcDbId: Long, exp: Int) {
+    fun removeFromFormation(ctx: Context, npcId: Int) {
+        setPosition(ctx, npcId, -1)
+    }
+
+    /**
+     * 升级
+     */
+    fun addExp(ctx: Context, npcId: Int, exp: Int) {
         val db = DatabaseHelper.get(ctx).writableDatabase
-        db.execSQL("UPDATE c_npc SET exp = exp + ? WHERE id = ?", arrayOf(exp, npcDbId))
+        db.execSQL("UPDATE c_npc SET exp = exp + ? WHERE npc_id = ?", arrayOf(exp, npcId))
     }
 }

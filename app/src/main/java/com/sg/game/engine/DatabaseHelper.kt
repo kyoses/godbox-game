@@ -42,7 +42,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "sg_game.db",
                 equip_id INTEGER NOT NULL,
                 up_level INTEGER DEFAULT 0,
                 status INTEGER DEFAULT 0,
-                position INTEGER DEFAULT -1
+                position INTEGER DEFAULT -1,
+                npc_id INTEGER DEFAULT -1
             )
         """.trimIndent())
         db.execSQL("""

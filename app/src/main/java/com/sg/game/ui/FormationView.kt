@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.sg.game.data.NpcStats
 import com.sg.game.engine.NpcManager
@@ -24,6 +25,24 @@ class FormationView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
+
+    /** 格子点击回调：传入 0-8 的位置 */
+    var onCellClick: ((Int) -> Unit)? = null
+
+    private var downX = 0f
+    private var downY = 0f
+    private var dragged = false
+
+    private fun hitTest(x: Float, y: Float): Int {
+        val w = width.toFloat()
+        val h = height.toFloat()
+        if (w <= 0 || h <= 0) return -1
+        val cellW = w / 3f
+        val cellH = h / 3f
+        val col = (x / cellW).toInt().coerceIn(0, 2)
+        val row = (y / cellH).toInt().coerceIn(0, 2)
+        return row * 3 + col
+    }
 
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -150,5 +169,29 @@ class FormationView @JvmOverloads constructor(
         path.close()
         canvas.drawPath(path, fillPaint)
         canvas.drawPath(path, strokePaint)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                downX = event.x
+                downY = event.y
+                dragged = false
+                return true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (kotlin.math.abs(event.x - downX) > 8 || kotlin.math.abs(event.y - downY) > 8) {
+                    dragged = true
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (!dragged) {
+                    val pos = hitTest(event.x, event.y)
+                    if (pos >= 0) onCellClick?.invoke(pos)
+                }
+                return true
+            }
+        }
+        return super.onTouchEvent(event)
     }
 }
