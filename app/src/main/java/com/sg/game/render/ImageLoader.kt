@@ -3,53 +3,44 @@ package com.sg.game.render
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-/**
- * 简单的图片缓存：按 key 缓存 Bitmap。
- *
- * 图片放 assets/img/{npc|equip|prop}/，key 例如：
- * - npc: "npc/caocao"
- * - equip: "equip/48"
- * - prop: "prop/hp1"
- */
 object ImageLoader {
 
     private val cache = ConcurrentHashMap<String, Bitmap>()
     private val lock = Any()
 
     fun load(ctx: Context, key: String): Bitmap? {
-        cache[key]?.let { return it }
-        return synchronized(lock) {
-            cache[key]?.let { return it
+        cache[key]?.let { cached -> return cached }
+        synchronized(lock) {
+            cache[key]?.let { cached -> return cached }
             val bmp = tryLoad(ctx, key)
             if (bmp != null) cache[key] = bmp
-            bmp
+            return bmp
         }
     }
 
     private fun tryLoad(ctx: Context, key: String): Bitmap? {
         val names = candidateNames(key)
         for (name in names) {
-            try {
-                ctx.assets.open("img/$name.png").use { input ->
-                    return BitmapFactory.decodeStream(input)
-                }
-            } catch (_: Exception) { /* try next */ }
-            try {
-                ctx.assets.open("img/$name.jpg").use { input ->
-                    return BitmapFactory.decodeStream(input)
-                }
-            } catch (_: Exception) { /* try next */ }
-            try {
-                ctx.assets.open("img/$name.gif").use { input ->
-                    return BitmapFactory.decodeStream(input)
-                }
-            } catch (_: Exception) { /* try next */ }
+            tryPng(ctx, name)?.let { return it }
+            tryJpg(ctx, name)?.let { return it }
+            tryGif(ctx, name)?.let { return it }
         }
         return null
     }
+
+    private fun tryPng(ctx: Context, name: String): Bitmap? = try {
+        ctx.assets.open("img/$name.png").use { BitmapFactory.decodeStream(it) }
+    } catch (_: Exception) { null }
+
+    private fun tryJpg(ctx: Context, name: String): Bitmap? = try {
+        ctx.assets.open("img/$name.jpg").use { BitmapFactory.decodeStream(it) }
+    } catch (_: Exception) { null }
+
+    private fun tryGif(ctx: Context, name: String): Bitmap? = try {
+        ctx.assets.open("img/$name.gif").use { BitmapFactory.decodeStream(it) }
+    } catch (_: Exception) { null }
 
     private fun candidateNames(key: String): List<String> = when {
         key.endsWith(".png") || key.endsWith(".jpg") || key.endsWith(".gif") -> listOf(key)
