@@ -39,7 +39,7 @@ class FormationActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnAutoFormation).setOnClickListener { autoFormation() }
         findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
 
-        formationView.setOnCellClick { pos ->
+        formationView.onCellClick = { pos ->
             // 阵位点击：弹出已上阵武将，撤销
             toggleAtPosition(pos)
         }
