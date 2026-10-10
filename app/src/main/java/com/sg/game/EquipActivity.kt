@@ -114,7 +114,7 @@ class EquipActivity : AppCompatActivity() {
     private fun showEquipDialog(entry: Map<String, Any>, dbId: Long) {
         val equipId = entry["equip_id"] as Int
         val equipType = StaticData.getEquipTemplate(equipId)?.optInt("type", 1) ?: 1
-        if (equipType !in 1..4) {
+        if (equipType < 1 || equipType > 4) {
             Toast.makeText(this, "此部位暂不支持穿戴", Toast.LENGTH_SHORT).show()
             return
         }

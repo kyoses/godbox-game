@@ -29,6 +29,11 @@ class FormationView @JvmOverloads constructor(
     /** 格子点击回调：传入 0-8 的位置 */
     var onCellClick: ((Int) -> Unit)? = null
 
+    /** 简化的 setter（用于 Kotlin 直接传 lambda） */
+    fun setOnCellClick(callback: (Int) -> Unit) {
+        this.onCellClick = callback
+    }
+
     private var downX = 0f
     private var downY = 0f
     private var dragged = false

@@ -68,19 +68,19 @@ object EquipManager {
         db.execSQL("UPDATE c_equip SET status=0, position=-1 WHERE npc_id=? AND position=?",
             arrayOf(npcDbId, position))
         // 装上新的
-        val rows = db.execSQL(
-            "UPDATE c_equip SET status=1, position=? WHERE id=?",
-            arrayOf(position, equipDbId))
-        return rows > 0
+        db.execSQL(
+            "UPDATE c_equip SET status=1, position=?, npc_id=? WHERE id=?",
+            arrayOf(position, npcDbId, equipDbId))
+        return true
     }
 
     /** 卸下 */
     fun unequip(ctx: Context, equipDbId: Long): Boolean {
         val db = DatabaseHelper.get(ctx).writableDatabase
-        val rows = db.execSQL(
-            "UPDATE c_equip SET status=0, position=-1 WHERE id=?",
+        db.execSQL(
+            "UPDATE c_equip SET status=0, position=-1, npc_id=-1 WHERE id=?",
             arrayOf(equipDbId))
-        return rows > 0
+        return true
     }
 
     /** 列已装备在某位置 */
