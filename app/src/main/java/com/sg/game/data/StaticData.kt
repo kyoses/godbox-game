@@ -25,7 +25,14 @@ object StaticData {
         val arr = data["s_npc"] ?: return@apply
         for (i in 0 until arr.length()) {
             val o = arr.getJSONObject(i)
-            add(NpcTemplate(o.optInt("id"), o.optString("name"), o.optString("img"),
+            // sg-htdocs 图片名是 npc_id.png；如果模板的 img 字段是文字名，
+            // 我们用 npc_id 优先（assets/img/npc/{id}.png）
+            val id = o.optInt("id")
+            val rawImg = o.optString("img", "")
+            val imgKey = if (rawImg.isEmpty() || rawImg == "caocao" && id != 1) {
+                "npc/$id"
+            } else rawImg
+            add(NpcTemplate(id, o.optString("name"), imgKey,
                 o.optInt("class", 1), o.optInt("phy_att", 50), o.optInt("mag_att", 50),
                 o.optInt("phy_def", 30), o.optInt("mag_def", 30), o.optInt("strength", 30),
                 o.optInt("intelligence", 30), o.optInt("speed", 50), o.optInt("crit", 30),
@@ -37,10 +44,12 @@ object StaticData {
         val arr = data["s_equip"] ?: return@apply
         for (i in 0 until arr.length()) {
             val o = arr.getJSONObject(i)
-            add(EquipTemplate(o.optInt("id"), o.optString("name"), o.optInt("type", 1),
+            val id = o.optInt("id")
+            // 装备图名是 id.png（如 48.png, 49.png...）
+            add(EquipTemplate(id, o.optString("name"), o.optInt("type", 1),
                 o.optInt("phy_att", 0), o.optInt("mag_att", 0), o.optInt("phy_def", 0),
                 o.optInt("mag_def", 0), o.optInt("strength", 0), o.optInt("intelligence", 0),
-                o.optInt("take_level", 1), o.optString("img")))
+                o.optInt("take_level", 1), "equip/$id"))
         }
     }
 

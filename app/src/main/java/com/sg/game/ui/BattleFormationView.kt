@@ -77,27 +77,44 @@ class BattleFormationView @JvmOverloads constructor(
         val w = cw * 0.42f
         val h = ch * 0.42f
 
-        // 颜色按 class
-        val color = when (npc.npcClass) {
-            1 -> Color.rgb(80, 140, 80)
-            2 -> Color.rgb(100, 130, 200)
-            3 -> Color.rgb(180, 100, 60)
-            4 -> Color.rgb(160, 80, 200)
-            else -> Color.rgb(150, 150, 150)
-        }
-        fillPaint.color = color
-        strokePaint.color = if (isLeft) Color.rgb(80, 200, 80) else Color.rgb(220, 80, 80)
-        strokePaint.strokeWidth = 2f
+        // 优先用图片
+        val bmp = com.sg.game.render.ImageLoader.load(context, "npc/${npc.npcId}")
+        if (bmp != null) {
+            val padding = 2f
+            val destW = cw - padding * 2
+            val ratio = bmp.height.toFloat() / bmp.width
+            val destH = destW * ratio
+            val dstLeft = cx - destW / 2
+            val dstTop = cy - destH / 2
+            val dstRight = cx + destW / 2
+            val dstBottom = cy + destH / 2
+            canvas.drawBitmap(bmp, null,
+                android.graphics.RectF(dstLeft, dstTop, dstRight, dstBottom), null)
+            strokePaint.color = if (isLeft) Color.rgb(80, 200, 80) else Color.rgb(220, 80, 80)
+            strokePaint.strokeWidth = 2f
+        } else {
+            // fallback：class 颜色
+            val color = when (npc.npcClass) {
+                1 -> Color.rgb(80, 140, 80)
+                2 -> Color.rgb(100, 130, 200)
+                3 -> Color.rgb(180, 100, 60)
+                4 -> Color.rgb(160, 80, 200)
+                else -> Color.rgb(150, 150, 150)
+            }
+            fillPaint.color = color
+            strokePaint.color = if (isLeft) Color.rgb(80, 200, 80) else Color.rgb(220, 80, 80)
+            strokePaint.strokeWidth = 2f
 
-        // 菱形
-        path.reset()
-        path.moveTo(cx, cy - h)
-        path.lineTo(cx + w, cy)
-        path.lineTo(cx, cy + h)
-        path.lineTo(cx - w, cy)
-        path.close()
-        canvas.drawPath(path, fillPaint)
-        canvas.drawPath(path, strokePaint)
+            // 菱形
+            path.reset()
+            path.moveTo(cx, cy - h)
+            path.lineTo(cx + w, cy)
+            path.lineTo(cx, cy + h)
+            path.lineTo(cx - w, cy)
+            path.close()
+            canvas.drawPath(path, fillPaint)
+            canvas.drawPath(path, strokePaint)
+        }
 
         // 名字
         textPaint.textSize = 18f

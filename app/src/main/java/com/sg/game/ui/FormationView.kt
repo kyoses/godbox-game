@@ -12,6 +12,7 @@ import com.sg.game.data.NpcStats
 import com.sg.game.engine.NpcManager
 import com.sg.game.data.StaticData
 import com.sg.game.engine.DatabaseHelper
+import com.sg.game.render.ImageLoader
 
 /**
  * 3x3 阵型视图。Canvas 绘制菱形。
@@ -138,27 +139,45 @@ class FormationView @JvmOverloads constructor(
             strokePaint.color = Color.rgb(120, 80, 60)
             strokePaint.strokeWidth = 1.5f
         } else {
-            // 有人
-            val npcClass = npc.npcClass
-            val color = when (npcClass) {
-                1 -> Color.rgb(80, 140, 80)   // 绿
-                2 -> Color.rgb(100, 130, 200) // 蓝
-                3 -> Color.rgb(180, 100, 60)  // 橙
-                4 -> Color.rgb(160, 80, 200)  // 紫
-                else -> Color.rgb(150, 150, 150) // 灰
+            // 有人：尝试用真实图片（按 npcId 找 assets/img/npc/{id}.png）
+            val bmp = ImageLoader.load(context, "npc/${npc.npcId}")
+            if (bmp != null) {
+                // 图片缩放到格子大小
+                val padding = 4f
+                val destW = cw - padding * 2
+                val ratio = bmp.height.toFloat() / bmp.width
+                val destH = destW * ratio
+                val dstLeft = cx - destW / 2
+                val dstTop = cy - destH / 2
+                val dstRight = cx + destW / 2
+                val dstBottom = cy + destH / 2
+                canvas.drawBitmap(bmp, null,
+                    android.graphics.RectF(dstLeft, dstTop, dstRight, dstBottom), null)
+                // 金色边框
+                strokePaint.color = Color.rgb(255, 215, 64)
+                strokePaint.strokeWidth = 2f
+            } else {
+                // 找不到图片 → 用 class 颜色块 fallback
+                val color = when (npc.npcClass) {
+                    1 -> Color.rgb(80, 140, 80)
+                    2 -> Color.rgb(100, 130, 200)
+                    3 -> Color.rgb(180, 100, 60)
+                    4 -> Color.rgb(160, 80, 200)
+                    else -> Color.rgb(150, 150, 150)
+                }
+                fillPaint.color = color
+                strokePaint.color = Color.rgb(255, 215, 64)
+                strokePaint.strokeWidth = 2f
             }
-            fillPaint.color = color
-            strokePaint.color = Color.rgb(255, 215, 64) // 金色边框
-            strokePaint.strokeWidth = 2f
 
-            // 画名字
-            textPaint.textSize = 22f
+            // 画名字 + 等级（始终显示）
+            textPaint.textSize = 20f
             val nameWidth = textPaint.measureText(npc.name)
-            canvas.drawText(npc.name, cx - nameWidth / 2, cy - 5, textPaint)
-            textPaint.textSize = 14f
+            canvas.drawText(npc.name, cx - nameWidth / 2, cy + 18, textPaint)
+            textPaint.textSize = 12f
             val lv = "Lv.${npc.level}"
             val lvWidth = textPaint.measureText(lv)
-            canvas.drawText(lv, cx - lvWidth / 2, cy + 18, textPaint)
+            canvas.drawText(lv, cx - lvWidth / 2, cy + 32, textPaint)
         }
         // 画菱形
         path.reset()
