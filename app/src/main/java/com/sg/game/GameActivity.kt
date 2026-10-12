@@ -86,16 +86,66 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showRecruitDialog() {
-        val templates = StaticData.allNpcTemplates.take(12)
-        val names = templates.map { it.name }.toTypedArray()
+        val templates = StaticData.allNpcTemplates.take(20)
+        val view = layoutInflater.inflate(R.layout.dialog_recruit_npc, null)
+        val lv = view.findViewById<android.widget.ListView>(R.id.lvNpcs)
+        val items = templates.map { tpl ->
+            mapOf(
+                "id" to tpl.id,
+                "name" to tpl.name,
+                "phyAtt" to tpl.phyAtt,
+                "magAtt" to tpl.magAtt,
+                "phyDef" to tpl.phyDef,
+                "magDef" to tpl.magDef,
+                "strength" to tpl.strength,
+                "intelligence" to tpl.intelligence,
+                "speed" to tpl.speed
+            )
+        }
+        val adapter = NpcRecruitAdapter(this, items)
+        lv.adapter = adapter
+        lv.setOnItemClickListener { _, _, pos, _ ->
+            val tpl = templates[pos]
+            NpcManager.addNpc(this, tpl.id)
+            Toast.makeText(this, "招募 ${'$'}{tpl.name} 成功", Toast.LENGTH_SHORT).show()
+            formationView.invalidate()
+        }
         AlertDialog.Builder(this)
-            .setTitle("招募武将")
-            .setItems(names) { _, which ->
-                NpcManager.addNpc(this, templates[which].id)
-                Toast.makeText(this, "招募 ${names[which]} 成功", Toast.LENGTH_SHORT).show()
-                formationView.invalidate()
-            }
-            .setNegativeButton("取消", null)
+            .setView(view)
+            .setNegativeButton("关闭", null)
             .show()
     }
+}
+
+/**
+ * 招募列表 adapter：每个 item 显示 NPC 缩略图 + 名字 + 属性 + 招募按钮
+ */
+class NpcRecruitAdapter(
+    private val ctx: android.content.Context,
+    private val items: List<Map<String, Any>>
+) : android.widget.BaseAdapter() {
+    private val inflater = android.view.LayoutInflater.from(ctx)
+
+    override fun getCount(): Int = items.size
+    override fun getItem(position: Int): Map<String, Any> = items[position]
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup): android.view.View {
+        val view = convertView ?: inflater.inflate(R.layout.item_npc_recruit, parent, false)
+        val item = items[position]
+        val npcId = (item["id"] as Int)
+        val img = view.findViewById<android.widget.ImageView>(R.id.imgNpc)
+        val bmp = com.sg.game.render.ImageLoader.load(ctx, "npc/${'$'}npcId")
+        if (bmp != null) img.setImageBitmap(bmp)
+        view.findViewById<android.widget.TextView>(R.id.tvName).text =
+            "${'$'}{item["name"]} (#${'$'}npcId)"
+        view.findViewById<android.widget.TextView>(R.id.tvStats).text =
+            "武${'$'}{item["phyAtt"]} 智${'$'}{item["intelligence"]} 速${'$'}{item["speed"]}"
+        view.findViewById<android.widget.Button>(R.id.btnRecruit).setOnClickListener {
+            com.sg.game.engine.NpcManager.addNpc(ctx, npcId)
+            android.widget.Toast.makeText(ctx, "已招募 ${'$'}{item["name"]}", android.widget.Toast.LENGTH_SHORT).show()
+        }
+        return view
+    }
+}
 }
