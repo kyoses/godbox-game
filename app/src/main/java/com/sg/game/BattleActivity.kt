@@ -120,7 +120,31 @@ class BattleActivity : AppCompatActivity() {
             }
         }
         battleMessages.add("")
-        battleMessages.add(if (winner == "left") "🏆 我方胜利！" else if (winner == "right") "💀 我方失败…" else "⚖ 平局")
+
+        // 战斗奖励
+        val won = winner == "left"
+        if (won) {
+            // 胜利：奖励 = 章节 * 100 金 + 50 经验 + 1 件装备
+            val rewardGold = (currentStage + 1) * 100
+            val rewardExp = 50
+            com.sg.game.engine.UserManager.addGold(this, rewardGold)
+            com.sg.game.engine.UserManager.addExp(this, rewardExp)
+            // 随机给一件装备
+            val pool = StaticData.allEquipTemplates
+            if (pool.isNotEmpty()) {
+                val equipId = pool.random().id
+                com.sg.game.engine.EquipManager.addEquip(this, equipId)
+                val name = pool.first { it.id == equipId }.name
+                battleMessages.add("🎁 奖励：金币 +$rewardGold, 经验 +$rewardExp, 装备 $name")
+            } else {
+                battleMessages.add("🎁 奖励：金币 +$rewardGold, 经验 +$rewardExp")
+            }
+            battleMessages.add("🏆 我方胜利！")
+        } else if (winner == "right") {
+            battleMessages.add("💀 我方失败…")
+        } else {
+            battleMessages.add("⚖ 平局")
+        }
         battleMessages.add("")
 
         // 启动动画
