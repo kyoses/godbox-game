@@ -1,9 +1,13 @@
 package com.sg.game
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sg.game.data.NpcStats
 import com.sg.game.data.StaticData
@@ -14,14 +18,14 @@ import com.sg.game.ui.BattleFormationView
 /**
  * 原生战斗 Activity：
  * - 玩家阵型（取自 c_npc.position）
- * - 敌方阵型（硬编码 5 个关卡）
- * - 点击"开始战斗"调用 BattleEngine
- * - 显示战报日志
+ * - 敌方阵型（13 关卡从 StaticData 读）
+ * - 战报按回合延迟展示（模拟原版战斗动画）
  */
 class BattleActivity : AppCompatActivity() {
 
     private lateinit var battleView: BattleFormationView
     private lateinit var tvLog: TextView
+    private lateinit var btnStart: Button
 
     // 关卡：从 StaticData.allBattleTemplates 读取
     private val stages: List<Pair<String, String>> by lazy {
@@ -30,6 +34,10 @@ class BattleActivity : AppCompatActivity() {
     }
 
     private var currentStage = 0
+    private var inBattle = false
+    private val handler = Handler(Looper.getMainLooper())
+    private val battleMessages = mutableListOf<String>()
+    private val PLAYER_FORMATION = "2 0 0|0 0 0|0 0 0"  // 默认 关羽在中军
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,59 +47,136 @@ class BattleActivity : AppCompatActivity() {
 
         battleView = findViewById(R.id.battleView)
         tvLog = findViewById(R.id.tvLog)
+        btnStart = findViewById(R.id.btnStart)
 
-        findViewById<TextView>(R.id.tvTitle).text = stages[currentStage].second
-        loadStage(currentStage)
-
-        findViewById<Button>(R.id.btnStart).setOnClickListener { startBattle() }
+        findViewById<TextView>(R.id.tvTitle).text = "选择关卡"
         findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+        btnStart.setOnClickListener { showStagePicker() }
+
+        loadStage(currentStage)
+    }
+
+    override fun onDestroy() {
+        handler.removeCallbacksAndMessages(null)
+        super.onDestroy()
     }
 
     private fun loadStage(stage: Int) {
         val (sysIds, title) = stages[stage]
-        val left = BattleEngine.buildTeam("2 0 0|0 0 0|0 0 0", level = 10)  // 玩家关羽
+        findViewById<TextView>(R.id.tvTitle).text = title
+        val left = BattleEngine.buildTeam(PLAYER_FORMATION, level = 10)
         val right = BattleEngine.buildTeam(sysIds, level = 5)
         battleView.refresh(left, right)
-        tvLog.text = "$title\n准备就绪"
+        tvLog.text = "$title\n点击'开始战斗'"
+        inBattle = false
+        btnStart.isEnabled = true
+    }
+
+    private fun showStagePicker() {
+        if (inBattle) return
+        val items = stages.mapIndexed { i, pair -> "${i + 1}. ${pair.second}" }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle("选择关卡")
+            .setItems(items) { _, which ->
+                currentStage = which
+                loadStage(currentStage)
+            }
+            .setNegativeButton("取消", null)
+            .show()
     }
 
     private fun startBattle() {
+        if (inBattle) return
+        inBattle = true
+        btnStart.isEnabled = false
+        battleMessages.clear()
+
         val (sysIds, title) = stages[currentStage]
-        val left = BattleEngine.buildTeam("2 0 0|0 0 0|0 0 0", level = 10)
+        val left = BattleEngine.buildTeam(PLAYER_FORMATION, level = 10)
         val right = BattleEngine.buildTeam(sysIds, level = 5)
+        val raw = BattleManager.fightToJson(PLAYER_FORMATION, sysIds)
+        val replay = org.json.JSONObject(raw)
 
-        // 重新 build（每次攻击血量会变）
-        val raw = BattleManager.fightToJson("2 0 0|0 0 0|0 0 0", sysIds)
-        val sb = StringBuilder()
-        sb.appendLine("=== $title ===")
+        // 准备战报
+        val winner = replay.optString("winner")
+        val leftArr = replay.optJSONArray("left")
+        val rightArr = replay.optJSONArray("right")
+        val log = replay.optJSONArray("log")
 
-        // 简单解析 log
-        val logPattern = "\"log\":\\[(.*?)\\]".toRegex()
-        val match = logPattern.find(raw)
-        if (match != null) {
-            val entries = match.groupValues[1].split("},").take(10)
-            for (e in entries) {
-                val t = "\"turn\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
-                val a = "\"attacker\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
-                val d = "\"defender\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "?"
-                val dmg = "\"damage\":(\\d+)".toRegex().find(e)?.groupValues?.get(1) ?: "0"
-                sb.appendLine("第${t}合: 攻${a} → 防${d} (伤害$dmg)")
+        battleMessages.add("⚔ $title 开战！")
+        battleMessages.add("我方 ${leftArr?.length() ?: 0} 名武将 vs 敌方 ${rightArr?.length() ?: 0} 名武将")
+        battleMessages.add("")
+
+        if (log != null) {
+            for (i in 0 until log.length()) {
+                val e = log.getJSONObject(i)
+                val turn = e.optInt("turn", i + 1)
+                val a = e.optInt("attacker")
+                val d = e.optInt("defender")
+                val dmg = e.optInt("damage", 0)
+                val attackerName = lookupName(a)
+                val defenderName = lookupName(d)
+                battleMessages.add("第${turn + 1}合  $attackerName 攻击 $defenderName  伤害 $dmg")
             }
         }
+        battleMessages.add("")
+        battleMessages.add(if (winner == "left") "🏆 我方胜利！" else if (winner == "right") "💀 我方失败…" else "⚖ 平局")
+        battleMessages.add("")
 
-        val winner = "\"winner\":\"(left|right|draw)\"".toRegex().find(raw)?.groupValues?.get(1) ?: "?"
-        sb.appendLine()
-        sb.appendLine(">>> $title 结束: $winner 胜 <<<")
+        // 启动动画
+        showMessagesSlowly(0)
+    }
 
-        tvLog.text = sb.toString()
-        battleView.refresh(left, right)
+    private fun lookupName(id: Int): String {
+        val arr = StaticData.allNpcTemplates
+        return arr.firstOrNull { it.id == id }?.name ?: "武将#$id"
+    }
 
-        if (winner == "left") {
-            currentStage = minOf(currentStage + 1, stages.size - 1)
-            findViewById<TextView>(R.id.tvTitle).text = stages[currentStage].second
-            Toast.makeText(this, "胜利！进入${stages[currentStage].second}", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "失败，请调整阵容再战", Toast.LENGTH_SHORT).show()
+    private fun showMessagesSlowly(index: Int) {
+        if (index >= battleMessages.size) {
+            inBattle = false
+            btnStart.isEnabled = true
+            // 胜利后弹下一关选项
+            handler.postDelayed({ showPostBattleDialog() }, 500)
+            return
         }
+        // 累积显示
+        val sb = StringBuilder()
+        for (i in 0..index) {
+            sb.appendLine(battleMessages[i])
+        }
+        tvLog.text = sb.toString()
+        handler.postDelayed({ showMessagesSlowly(index + 1) }, 500)
+    }
+
+    private fun showPostBattleDialog() {
+        val (sysIds, title) = stages[currentStage]
+        val raw = BattleManager.fightToJson(PLAYER_FORMATION, sysIds)
+        val replay = org.json.JSONObject(raw)
+        val won = replay.optString("winner") == "left"
+        val next = currentStage + 1
+        val hasNext = next < stages.size
+        val options = mutableListOf<String>()
+        if (won) options.add("下一关")
+        options.add("重打本关")
+        options.add("返回选关")
+        AlertDialog.Builder(this)
+            .setTitle(if (won) "胜利！" else "失败")
+            .setItems(options.toTypedArray()) { _, which ->
+                when {
+                    won && options[which] == "下一关" && hasNext -> {
+                        currentStage = next
+                        loadStage(currentStage)
+                    }
+                    options[which] == "重打本关" -> {
+                        loadStage(currentStage)
+                    }
+                    options[which] == "返回选关" -> {
+                        showStagePicker()
+                    }
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
     }
 }
