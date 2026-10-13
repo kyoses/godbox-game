@@ -126,11 +126,24 @@ class EquipActivity : AppCompatActivity() {
         val upLv = c.getInt(c.getColumnIndexOrThrow("up_level"))
         c.close()
         val tpl = StaticData.getEquipTemplate(equipId) ?: return
-        val typeName = when (tpl.type) {
+        val type = tpl.optInt("type", 1)
+        val typeName = when (type) {
             1 -> "武器"; 2 -> "甲"; 3 -> "盔"; 4 -> "鞋"; else -> "其他"
         }
         val upgradeMul = 1 + upLv * 0.1
-        val msg = "名称: ${tpl.name}\n类型: $typeName\n强化: +$upLv\n\n基础属性:\n  武力 +${tpl.strength * tpl.strength / 10}\n  智谋 +${tpl.intelligence}\n  物攻 +${tpl.phyAtt}\n  法攻 +${tpl.magAtt}\n  物防 +${tpl.phyDef}\n  法防 +${tpl.magDef}\n  速度 +${tpl.speed}\n  暴击 +${tpl.crit}\n\n强化加成 x${"%.1f".format(upgradeMul)}\n需等级: ${tpl.takeLevel}"
+        val strength = tpl.optInt("strength", 0)
+        val msg = "名称: " + tpl.optString("name") + "\n类型: " + typeName +
+            "\n强化: +" + upLv + "\n\n基础属性:\n" +
+            "  武力 +" + (strength * strength / 10) + "\n" +
+            "  智谋 +" + tpl.optInt("intelligence") + "\n" +
+            "  物攻 +" + tpl.optInt("phyAtt") + "\n" +
+            "  法攻 +" + tpl.optInt("magAtt") + "\n" +
+            "  物防 +" + tpl.optInt("phyDef") + "\n" +
+            "  法防 +" + tpl.optInt("magDef") + "\n" +
+            "  速度 +" + tpl.optInt("speed") + "\n" +
+            "  暴击 +" + tpl.optInt("crit") + "\n\n强化加成 x" +
+            String.format("%.1f", upgradeMul) +
+            "\n需等级: " + tpl.optInt("takeLevel")
         AlertDialog.Builder(this)
             .setTitle("装备详情")
             .setMessage(msg)
@@ -138,14 +151,6 @@ class EquipActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun getEquipId(dbId: Long): Int? {
-        val db = DatabaseHelper.get(this).readableDatabase
-        val c = db.rawQuery("SELECT equip_id FROM c_equip WHERE id=?",
-            arrayOf(dbId.toString()))
-        val id = if (c.moveToFirst()) c.getInt(0) else null
-        c.close()
-        return id
-    }
 }
 
 class EquipAdapter(
