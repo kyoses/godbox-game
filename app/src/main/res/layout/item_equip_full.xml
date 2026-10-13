@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@color/ink_red"
+    android:layout_margin="4dp">
+
+    <ImageView
+        android:id="@+id/imgEquip"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvEquipName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="青锋剑"
+            android:textColor="@color/ink_gold"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEquipLv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="强化 +0"
+            android:textColor="@color/silk_bg"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tvEquipStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="武+25 速+5"
+            android:textColor="@color/ink_gold"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tvEquipEquipped"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未装备"
+            android:textColor="@color/ink_cyan"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnEquipAction"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:text="穿戴"
+        android:textColor="@color/silk_bg"
+        android:textSize="13sp"
+        android:background="@drawable/btn_round_gold" />
+
+</LinearLayout>
