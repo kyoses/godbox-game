@@ -172,19 +172,20 @@ class EquipAdapter(
         val dbId = (item["db_id"] as Long)
 
         val tpl = StaticData.getEquipTemplate(equipId)
-        val name = tpl?.name ?: "装备$equipId"
-        val typeName = when (tpl?.type) {
+        val name = tpl?.optString("name", "装备" + equipId) ?: "装备" + equipId
+        val type = tpl?.optInt("type", 1) ?: 1
+        val typeName = when (type) {
             1 -> "武器"; 2 -> "甲"; 3 -> "盔"; 4 -> "鞋"; else -> "其他"
         }
         val img = view.findViewById<ImageView>(R.id.imgEquip)
-        val bmp = ImageLoader.load(ctx, "equip/$equipId")
+        val bmp = ImageLoader.load(ctx, "equip/" + equipId)
         if (bmp != null) img.setImageBitmap(bmp)
-        view.findViewById<TextView>(R.id.tvEquipName).text = "$name ($typeName)"
-        view.findViewById<TextView>(R.id.tvEquipLv).text = "强化 +$upLv  /  需 Lv.${tpl?.takeLevel ?: 1}"
-        val phyAtt = tpl?.phyAtt ?: 0
-        val magAtt = tpl?.magAtt ?: 0
-        val strength = tpl?.strength ?: 0
-        val speed = tpl?.speed ?: 0
+        view.findViewById<TextView>(R.id.tvEquipName).text = name + " (" + typeName + ")"
+        view.findViewById<TextView>(R.id.tvEquipLv).text = "强化 +" + upLevel + "  /  需 Lv." + (tpl?.optInt("takeLevel", 1) ?: 1)
+        val phyAtt = tpl?.optInt("phyAtt", 0) ?: 0
+        val magAtt = tpl?.optInt("magAtt", 0) ?: 0
+        val strength = tpl?.optInt("strength", 0) ?: 0
+        val speed = tpl?.optInt("speed", 0) ?: 0
         val statsText = buildString {
             if (phyAtt > 0) append("武+$phyAtt ")
             if (magAtt > 0) append("智+$magAtt ")
@@ -244,4 +245,13 @@ class EquipAdapter(
             }
             .show()
     }
+}
+
+private fun getEquipId(dbId: Long): Int? {
+    val db = DatabaseHelper(this).readableDatabase
+    val c = db.rawQuery("SELECT equip_id FROM c_equip WHERE id=?",
+        arrayOf(dbId.toString()))
+    val id = if (c.moveToFirst()) c.getInt(0) else null
+    c.close()
+    return id
 }
