@@ -80,7 +80,7 @@ class EquipActivity : AppCompatActivity() {
     }
 
     fun callShowEquipDialog(equipDbId: Long) {
-        val equipId = getEquipId(equipDbId) ?: return
+        val equipId = getEquipId(this, equipDbId) ?: return
         val equipType = StaticData.getEquipTemplate(equipId)?.optInt("type", 1) ?: 1
         if (equipType !in 1..4) {
             Toast.makeText(this, "此部位暂支持穿戴", Toast.LENGTH_SHORT).show()
@@ -247,8 +247,8 @@ class EquipAdapter(
     }
 }
 
-private fun getEquipId(dbId: Long): Int? {
-    val db = DatabaseHelper.get(this@EquipActivity).readableDatabase
+private fun getEquipId(ctx: android.content.Context, dbId: Long): Int? {
+    val db = DatabaseHelper.get(ctx).readableDatabase
     val c = db.rawQuery("SELECT equip_id FROM c_equip WHERE id=?",
         arrayOf(dbId.toString()))
     val id = if (c.moveToFirst()) c.getInt(0) else null
