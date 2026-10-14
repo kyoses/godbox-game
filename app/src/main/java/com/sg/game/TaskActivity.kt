@@ -52,12 +52,12 @@ class TaskAdapter(
         val title = (item["title"] as? String) ?: "任务$taskId"
 
         val tpl = StaticData.getTaskTemplate(taskId)
-        val desc = tpl?.desc ?: ""
-        val rewardGold = tpl?.rewardGold ?: 0
-        val rewardExp = tpl?.rewardExp ?: 0
-        val rewardPropId = tpl?.rewardProp ?: 0
+        val desc = tpl?.optString("desc", "") ?: ""
+        val rewardGold = tpl?.optInt("reward_gold", 0) ?: 0
+        val rewardExp = tpl?.optInt("reward_exp", 0) ?: 0
+        val rewardPropId = tpl?.optInt("reward_prop", 0) ?: 0
         val propName = if (rewardPropId > 0) {
-            StaticData.getPropTemplate(rewardPropId)?.name ?: "道具$rewardPropId"
+            StaticData.getPropTemplate(rewardPropId)?.optString("name", "道具" + rewardPropId) ?: "道具$rewardPropId"
         } else null
 
         view.findViewById<TextView>(R.id.tvTaskTitle).text = title
