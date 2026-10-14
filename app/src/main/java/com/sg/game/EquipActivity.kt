@@ -248,7 +248,7 @@ class EquipAdapter(
 }
 
 private fun getEquipId(dbId: Long): Int? {
-    val db = DatabaseHelper(this).readableDatabase
+    val db = DatabaseHelper.get(this@EquipActivity).readableDatabase
     val c = db.rawQuery("SELECT equip_id FROM c_equip WHERE id=?",
         arrayOf(dbId.toString()))
     val id = if (c.moveToFirst()) c.getInt(0) else null
