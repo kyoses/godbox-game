@@ -13,7 +13,7 @@ object AiSystem {
 
     private var lastTriggerTurn: Int = -1
 
-    fun maybeTriggerAttack(state: com.threekingdoms.emperor.data.GameState): AttackInfo? {
+    fun maybeTriggerAttack(state: com.sg.game.data.GameState): AttackInfo? {
         if (state.turnCount - lastTriggerTurn < 3) return null
         val playerNpcs = NpcManager.listForPlayer(state)
             .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
@@ -32,7 +32,7 @@ object AiSystem {
     }
 
     fun doBattle(
-        state: com.threekingdoms.emperor.data.GameState,
+        state: com.sg.game.data.GameState,
         info: AttackInfo
     ): BattleReplay {
         val sysFormation = info.aiFormation
@@ -43,7 +43,7 @@ object AiSystem {
 
     fun applyResult(
         ctx: android.content.Context,
-        state: com.threekingdoms.emperor.data.GameState,
+        state: com.sg.game.data.GameState,
         info: AttackInfo,
         replay: BattleReplay
     ): AiResult {
@@ -82,7 +82,7 @@ object AiSystem {
         }
     }
 
-    private fun currentFormation(state: com.threekingdoms.emperor.data.GameState): String {
+    private fun currentFormation(state: com.sg.game.data.GameState): String {
         val npcs = NpcManager.listForPlayer(state)
             .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
         if (npcs.isEmpty()) return "2 0 0|0 0 0|0 0 0"

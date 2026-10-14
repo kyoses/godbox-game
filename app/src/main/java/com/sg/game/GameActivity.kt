@@ -23,6 +23,7 @@ import com.sg.game.ui.FormationView
 
 class GameActivity : AppCompatActivity() {
 
+    private lateinit var state: GameState
     private lateinit var tvTitle: TextView
     private lateinit var tvGold: TextView
     private lateinit var tvExp: TextView
