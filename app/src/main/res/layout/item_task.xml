@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@color/ink_red"
+    android:layout_margin="4dp">
+
+    <ImageView
+        android:id="@+id/imgTask"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTaskTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="初出茅庐"
+            android:textColor="@color/ink_gold"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTaskDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成第一场战斗"
+            android:textColor="@color/silk_bg"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvTaskReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="奖励：金币+100 经验+50"
+            android:textColor="@color/ink_gold"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tvTaskStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏳ 未完成"
+            android:textColor="@color/ink_cyan"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnTaskAction"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:text="完成"
+        android:textColor="@color/silk_bg"
+        android:textSize="13sp"
+        android:background="@drawable/btn_round_gold" />
+
+</LinearLayout>
