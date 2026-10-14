@@ -57,6 +57,52 @@ class GameActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnRecruit).setOnClickListener {
             showRecruitDialog()
         }
+        findViewById<Button>(R.id.btnAdvance).setOnClickListener {
+            advanceTurn()
+        }
+        findViewById<Button>(R.id.btnExit).setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun advanceTurn() {
+        state.turnCount++
+        val info = com.sg.game.engine.AiSystem.maybeTriggerAttack(state)
+        if (info != null) {
+            val replay = com.sg.game.engine.AiSystem.doBattle(state, info)
+            val result = com.sg.game.engine.AiSystem.applyResult(this, state, info, replay)
+            showAiResultDialog(info, replay, result)
+        } else {
+            Toast.makeText(this, "推进一辰：当前安全", Toast.LENGTH_SHORT).show()
+        }
+        refresh()
+    }
+
+    private fun showAiResultDialog(
+        info: com.sg.game.engine.AiSystem.AttackInfo,
+        replay: com.sg.game.data.BattleReplay,
+        result: com.sg.game.engine.AiSystem.AiResult
+    ) {
+        val lines = StringBuilder()
+        lines.append("遭遇 ").append(info.templateName).append(" 袭击！\n\n")
+        if (result.won) {
+            lines.append("战斗胜利！\n")
+            lines.append("金币 +").append(result.goldChange).append("\n")
+            if (result.itemName.isNotEmpty()) {
+                lines.append("战利品：").append(result.itemName).append("\n")
+            }
+        } else {
+            lines.append("战斗失败\n")
+            lines.append("损失金币 ").append(-result.goldChange).append("\n")
+            if (result.itemName.isNotEmpty()) {
+                lines.append("失去装备：").append(result.itemName).append("\n")
+            }
+        }
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(if (result.won) "胜利" else "失败")
+            .setMessage(lines.toString())
+            .setPositiveButton("确定", null)
+            .show()
     }
 
     override fun onResume() {

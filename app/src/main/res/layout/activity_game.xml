@@ -159,4 +159,31 @@
             android:background="@drawable/btn_round_red" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/btnAdvance"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="2"
+            android:layout_margin="2dp"
+            android:text="⏩ 推进一辰（可能遇袭）"
+            android:textColor="@color/ink_gold"
+            android:background="@drawable/btn_round_red" />
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:text="退出"
+            android:textColor="@color/silk_bg"
+            android:background="@drawable/btn_round_gold" />
+    </LinearLayout>
+
 </LinearLayout></FrameLayout>
