@@ -17,7 +17,6 @@ import com.sg.game.data.NpcTemplate
 import com.sg.game.data.StaticData
 import com.sg.game.engine.DatabaseHelper
 import com.sg.game.engine.NpcManager
-import com.sg.game.data.GameState
 import com.sg.game.engine.UserManager
 import com.sg.game.render.ImageLoader
 import com.sg.game.ui.FormationView
@@ -67,10 +66,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun advanceTurn() {
-        val info = com.sg.game.engine.AiSystem.maybeTriggerAttack(null)
+        val info = com.sg.game.engine.AiSystem.maybeTriggerAttack(this)
         if (info != null) {
-            val replay = com.sg.game.engine.AiSystem.doBattle(null, info)
-            val result = com.sg.game.engine.AiSystem.applyResult(this, null, info, replay)
+            val replay = com.sg.game.engine.AiSystem.doBattle(this, info)
+            val result = com.sg.game.engine.AiSystem.applyResult(this, info, replay)
             showAiResultDialog(info, replay, result)
         } else {
             Toast.makeText(this, "推进一辰：当前安全", Toast.LENGTH_SHORT).show()
