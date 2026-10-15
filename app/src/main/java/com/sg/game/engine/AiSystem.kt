@@ -1,6 +1,5 @@
 package com.sg.game.engine
 
-import com.sg.game.data.GameState
 import com.sg.game.data.StaticData
 import com.sg.game.data.BattleReplay
 import kotlin.random.Random
@@ -97,8 +96,8 @@ object AiSystem {
         }
     }
 
-    private fun currentFormation(state: com.sg.game.data.GameState): String {
-        val npcs = NpcManager.listForPlayer(state)
+    private fun currentFormation(ctx: android.content.Context): String {
+        val npcs = NpcManager.listForPlayer(ctx)
             .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
         if (npcs.isEmpty()) return "2 0 0|0 0 0|0 0 0"
         val firstId = npcs.first()["npc_id"] ?: 2
