@@ -24,7 +24,6 @@ import com.sg.game.ui.FormationView
 
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var state: GameState
     private lateinit var tvTitle: TextView
     private lateinit var tvGold: TextView
     private lateinit var tvExp: TextView
@@ -68,11 +67,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun advanceTurn() {
-        state.turnCount++
-        val info = com.sg.game.engine.AiSystem.maybeTriggerAttack(state)
+        val info = com.sg.game.engine.AiSystem.maybeTriggerAttack(null)
         if (info != null) {
-            val replay = com.sg.game.engine.AiSystem.doBattle(state, info)
-            val result = com.sg.game.engine.AiSystem.applyResult(this, state, info, replay)
+            val replay = com.sg.game.engine.AiSystem.doBattle(null, info)
+            val result = com.sg.game.engine.AiSystem.applyResult(this, null, info, replay)
             showAiResultDialog(info, replay, result)
         } else {
             Toast.makeText(this, "推进一辰：当前安全", Toast.LENGTH_SHORT).show()

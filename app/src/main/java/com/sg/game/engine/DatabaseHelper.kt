@@ -26,6 +26,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "sg_game.db",
             )
         """.trimIndent())
         db.execSQL("""
+            CREATE TABLE IF NOT EXISTS c_meta (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        """.trimIndent())
+        db.execSQL("""
             CREATE TABLE IF NOT EXISTS c_npc (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 npc_id INTEGER NOT NULL,

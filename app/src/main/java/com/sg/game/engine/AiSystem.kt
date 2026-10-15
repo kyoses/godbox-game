@@ -12,15 +12,16 @@ object AiSystem {
         "吕布", "华雄", "董卓"
     )
 
-    private var lastTriggerTurn: Int = -1
+    private var lastTriggerTurn: Int = 0
 
-    fun maybeTriggerAttack(state: com.sg.game.data.GameState): AttackInfo? {
-        if (state.turnCount - lastTriggerTurn < 3) return null
-        val playerNpcs = NpcManager.listForPlayer(state)
+    fun maybeTriggerAttack(ctx: android.content.Context): AttackInfo? {
+        val currentTurn = getCurrentTurn(ctx)
+        if (currentTurn - lastTriggerTurn < 3) return null
+        val playerNpcs = NpcManager.listForPlayer(ctx)
             .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
         if (playerNpcs.isEmpty()) return null
         if (Random.nextFloat() > 0.30f) return null
-        lastTriggerTurn = state.turnCount
+        lastTriggerTurn = currentTurn
 
         val templateName = aiTemplates.random()
         val aiCount = 1 + Random.nextInt(2)
@@ -32,19 +33,32 @@ object AiSystem {
         )
     }
 
+    private fun getCurrentTurn(ctx: android.content.Context): Int {
+        val db = com.sg.game.engine.DatabaseHelper.get(ctx).readableDatabase
+        val c = db.rawQuery("SELECT value FROM c_meta WHERE key='turn'", null)
+        val turn = if (c.moveToFirst()) c.getInt(0) else 0
+        c.close()
+        return turn
+    }
+
+    fun saveCurrentTurn(ctx: android.content.Context, turn: Int) {
+        val db = com.sg.game.engine.DatabaseHelper.get(ctx).writableDatabase
+        db.execSQL("INSERT OR REPLACE INTO c_meta (key, value) VALUES ('turn', ?)", arrayOf(turn.toString()))
+    }
+
     fun doBattle(
-        state: com.sg.game.data.GameState,
+        ctx: android.content.Context,
         info: AttackInfo
     ): BattleReplay {
         val sysFormation = info.aiFormation
-        val left = BattleEngine.buildTeam(currentFormation(state), level = 10)
+        val currentFormation = currentFormation(ctx)
+        val left = BattleEngine.buildTeam(currentFormation, level = 10)
         val right = BattleEngine.buildTeam(sysFormation, level = 8)
-        return BattleEngine.runFight(currentFormation(state), sysFormation)
+        return BattleEngine.runFight(currentFormation, sysFormation)
     }
 
     fun applyResult(
         ctx: android.content.Context,
-        state: com.sg.game.data.GameState,
         info: AttackInfo,
         replay: BattleReplay
     ): AiResult {
