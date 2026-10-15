@@ -17,6 +17,7 @@ import com.sg.game.data.NpcTemplate
 import com.sg.game.data.StaticData
 import com.sg.game.engine.DatabaseHelper
 import com.sg.game.engine.NpcManager
+import com.sg.game.data.GameState
 import com.sg.game.engine.UserManager
 import com.sg.game.render.ImageLoader
 import com.sg.game.ui.FormationView
