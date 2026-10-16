@@ -23,6 +23,13 @@ import com.sg.game.ui.BattleFormationView
  */
 class BattleActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_STAGE_INDEX = "stage_index"
+        const val EXTRA_SYS_IDS = "sys_ids"
+        const val EXTRA_STAGE_NAME = "stage_name"
+    }
+
+
     private lateinit var battleView: BattleFormationView
     private lateinit var tvLog: TextView
     private lateinit var btnStart: Button
@@ -49,16 +56,69 @@ class BattleActivity : AppCompatActivity() {
         tvLog = findViewById(R.id.tvLog)
         btnStart = findViewById(R.id.btnStart)
 
-        findViewById<TextView>(R.id.tvTitle).text = "选择关卡"
         findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
         btnStart.setOnClickListener { showStagePicker() }
 
-        loadStage(currentStage)
+        val idx = intent.getIntExtra(EXTRA_STAGE_INDEX, -1)
+        val sysIds = intent.getStringExtra(EXTRA_SYS_IDS)
+        val name = intent.getStringExtra(EXTRA_STAGE_NAME)
+        if (idx >= 0 && sysIds != null) {
+            // 从 MapActivity 直接传入关卡 - 自动开始
+            currentStage = idx
+            findViewById<TextView>(R.id.tvTitle).text = name ?: ("关卡 " + (idx + 1))
+            btnStart.text = "返回"
+            btnStart.setOnClickListener { finish() }
+            loadAndStart(sysIds)
+        } else {
+            // 没传关卡 - 弹选关对话框
+            findViewById<TextView>(R.id.tvTitle).text = "选择关卡"
+            btnStart.text = "选择关卡"
+            loadStage(0)
+        }
     }
 
     override fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
         super.onDestroy()
+    }
+
+    private fun getPlayerFormation(): String {
+        val npcs = NpcManager.listForPlayer(this)
+            .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
+        if (npcs.isEmpty()) return "2 0 0|0 0 0|0 0 0"
+        val sb = StringBuilder()
+        for (i in 0..2) for (j in 0..2) {
+            val pos = i * 3 + j
+            val npc = npcs.firstOrNull { (it["position"] as? Long)?.toInt() == pos }
+            if (i > 0 || j > 0) sb.append(if (j == 0) "|" else ",")
+            sb.append(if (npc != null) (npc["npc_id"] ?: 0) else 0)
+        }
+        return sb.toString()
+    }
+
+    private fun loadAndStart(sysIds: String) {
+        val left = BattleEngine.buildTeam(getPlayerFormation(), level = 10)
+        val right = BattleEngine.buildTeam(sysIds, level = 5)
+        battleView.refresh(left, right)
+        val result = BattleEngine.runFight(getPlayerFormation(), sysIds)
+        val logText = StringBuilder()
+        logText.append("=== 战报 ===
+
+")
+        for (e in result.log) {
+            logText.append("第" + (e.turn + 1) + "合  攻" + e.attacker + " → 防" + e.defender + "  伤害" + e.damage + "
+")
+        }
+        logText.append("
+胜利方: " + result.winner)
+        tvLog.text = logText.toString()
+        if (result.winner == "left") {
+            com.sg.game.engine.UserManager.addGold(this, 100 + (currentStage + 1) * 50)
+            com.sg.game.engine.UserManager.addExp(this, 20)
+            Toast.makeText(this, "胜利 +" + (100 + (currentStage + 1) * 50) + " 金", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "失败", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun loadStage(stage: Int) {

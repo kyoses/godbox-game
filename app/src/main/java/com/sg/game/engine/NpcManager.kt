@@ -38,12 +38,20 @@ object NpcManager {
         val tpl = StaticData.getNpcTemplate(npcId) ?: return false
         val name = tpl.optString("name", "武将$npcId")
         val db = DatabaseHelper.get(ctx).writableDatabase
+        // 找一个空阵位（0-8），-1 表示待命
+        val used = mutableSetOf<Int>()
+        val cur = db.rawQuery("SELECT position FROM c_npc", null)
+        while (cur.moveToNext()) used.add(cur.getInt(0))
+        cur.close()
+        var pos = -1
+        for (p in 0..8) if (p !in used) { pos = p; break }
+
         val cv = ContentValues().apply {
             put("npc_id", npcId)
             put("name", name)
             put("level", 1)
             put("exp", 0)
-            put("position", -1)
+            put("position", pos)
             put("str_inte", 0)
         }
         val id = db.insert("c_npc", null, cv)

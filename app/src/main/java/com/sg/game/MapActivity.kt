@@ -46,6 +46,16 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun launchBattle(stage: Int) {
-        startActivity(Intent(this, BattleActivity::class.java))
+        val stages = StaticData.allBattleTemplates.sortedBy { it.dispOrder }
+        if (stage < 0 || stage >= stages.size) {
+            android.widget.Toast.makeText(this, "无效关卡", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        val tpl = stages[stage]
+        val intent = Intent(this, BattleActivity::class.java)
+            .putExtra(BattleActivity.EXTRA_STAGE_INDEX, stage)
+            .putExtra(BattleActivity.EXTRA_SYS_IDS, tpl.sysFormation)
+            .putExtra(BattleActivity.EXTRA_STAGE_NAME, tpl.name)
+        startActivity(intent)
     }
 }
