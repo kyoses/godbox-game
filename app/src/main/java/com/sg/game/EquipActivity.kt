@@ -98,7 +98,7 @@ class EquipActivity : AppCompatActivity() {
 
     private fun showNpcPicker(equipDbId: Long, position: Int) {
         val npcs = NpcManager.listForPlayer(this)
-            .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
+            .filter { (it["position"] as? Int)?.toInt() ?: -1 in 0..8 }
         if (npcs.isEmpty()) {
             Toast.makeText(this, "请先把武将上阵", Toast.LENGTH_SHORT).show()
             return

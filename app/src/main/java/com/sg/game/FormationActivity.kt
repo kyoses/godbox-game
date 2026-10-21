@@ -50,11 +50,11 @@ class FormationActivity : AppCompatActivity() {
     private fun refresh() {
         val npcs = NpcManager.listForPlayer(this)
         val items = npcs.map { entry ->
-            val npcId = (entry["npc_id"] as Long).toInt()
-            val pos = (entry["position"] as Long).toInt()
+            val npcId = (entry["npc_id"] as Int).toInt()
+            val pos = (entry["position"] as Int).toInt()
             val mark = if (pos >= 0) "[阵$pos]" else "[待命]"
             val name = (entry["name"] as? String) ?: "武将$npcId"
-            val level = (entry["level"] as Long).toInt()
+            val level = (entry["level"] as Int).toInt()
             "$mark $name Lv.$level"
         }
         lvNpcs.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
@@ -68,8 +68,8 @@ class FormationActivity : AppCompatActivity() {
     }
 
     private fun onNpcClicked(entry: Map<String, Any>) {
-        val npcId = (entry["npc_id"] as Long).toInt()
-        val currentPos = (entry["position"] as Long).toInt()
+        val npcId = (entry["npc_id"] as Int).toInt()
+        val currentPos = (entry["position"] as Int).toInt()
         if (currentPos >= 0) {
             // 已上阵 → 撤下
             NpcManager.removeFromFormation(this, npcId)
@@ -89,16 +89,16 @@ class FormationActivity : AppCompatActivity() {
 
     private fun findEmptyPosition(): Int {
         val npcs = NpcManager.listForPlayer(this)
-        val occupied = npcs.mapNotNull { (it["position"] as? Long)?.toInt() }.toSet()
+        val occupied = npcs.mapNotNull { (it["position"] as? Int)?.toInt() }.toSet()
         for (i in 0..8) if (i !in occupied) return i
         return -1
     }
 
     private fun toggleAtPosition(pos: Int) {
         val npcs = NpcManager.listForPlayer(this)
-        val target = npcs.firstOrNull { (it["position"] as? Long)?.toInt() == pos }
+        val target = npcs.firstOrNull { (it["position"] as? Int)?.toInt() == pos }
         if (target != null) {
-            val npcId = (target["npc_id"] as Long).toInt()
+            val npcId = (target["npc_id"] as Int).toInt()
             NpcManager.removeFromFormation(this, npcId)
             Toast.makeText(this, "$pos 位武将下阵", Toast.LENGTH_SHORT).show()
             refresh()
@@ -112,7 +112,7 @@ class FormationActivity : AppCompatActivity() {
             .setPositiveButton("清空") { _, _ ->
                 val npcs = NpcManager.listForPlayer(this)
                 for (entry in npcs) {
-                    val npcId = (entry["npc_id"] as Long).toInt()
+                    val npcId = (entry["npc_id"] as Int).toInt()
                     NpcManager.removeFromFormation(this, npcId)
                 }
                 refresh()
@@ -123,11 +123,11 @@ class FormationActivity : AppCompatActivity() {
 
     private fun autoFormation() {
         val npcs = NpcManager.listForPlayer(this)
-            .sortedByDescending { it["power"] as? Long ?: 0L }
+            .sortedByDescending { it["power"] as? Int ?: 0 }
         var pos = 0
         for (entry in npcs) {
             if (pos > 8) break
-            val npcId = (entry["npc_id"] as Long).toInt()
+            val npcId = (entry["npc_id"] as Int).toInt()
             NpcManager.setPosition(this, npcId, pos)
             pos++
         }

@@ -19,12 +19,19 @@ object NpcManager {
             val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
             val level = cursor.getInt(cursor.getColumnIndexOrThrow("level"))
             val position = cursor.getInt(cursor.getColumnIndexOrThrow("position"))
+            // 从静态模板取战力（用于自动排列排序）
+            val tpl = StaticData.getNpcTemplate(npcId)
+            val power = (tpl?.optInt("phy_att", 0) ?: 0) +
+                (tpl?.optInt("mag_att", 0) ?: 0) +
+                (tpl?.optInt("strength", 0) ?: 0) * 2 +
+                (tpl?.optInt("intelligence", 0) ?: 0)
             list.add(mapOf(
                 "db_id" to dbId,
                 "npc_id" to npcId,
                 "name" to name,
                 "level" to level,
-                "position" to position
+                "position" to position,
+                "power" to power
             ))
         }
         cursor.close()

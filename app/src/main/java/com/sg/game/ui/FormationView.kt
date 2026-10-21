@@ -88,15 +88,15 @@ class FormationView @JvmOverloads constructor(
             // 把 0-8 position 映射到 3x3
             val grid = arrayOfNulls<NpcStats>(9)
             for (n in npcList) {
-                val pos = (n["position"] as? Long)?.toInt() ?: -1
+                val pos = (n["position"] as? Int)?.toInt() ?: -1
                 if (pos in 0..8) {
-                    val npcId = (n["npc_id"] as? Long)?.toInt() ?: continue
+                    val npcId = (n["npc_id"] as? Int)?.toInt() ?: continue
                     val tpl = com.sg.game.data.StaticData.getNpcTemplate(npcId)
                     grid[pos] = NpcStats(
                         npcId = npcId,
                         name = n["name"] as? String ?: "武将$npcId",
                         type = tpl?.optInt("class", 1) ?: 1,
-                        level = (n["level"] as? Long)?.toInt() ?: 1,
+                        level = (n["level"] as? Int)?.toInt() ?: 1,
                         hp = 100, hpMax = 100,
                         phyAtt = tpl?.optInt("phy_att", 50) ?: 50,
                         magAtt = tpl?.optInt("mag_att", 50) ?: 50,

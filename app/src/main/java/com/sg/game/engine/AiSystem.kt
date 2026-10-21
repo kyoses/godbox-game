@@ -17,7 +17,7 @@ object AiSystem {
         val currentTurn = getCurrentTurn(ctx)
         if (currentTurn - lastTriggerTurn < 3) return null
         val playerNpcs = NpcManager.listForPlayer(ctx)
-            .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
+            .filter { (it["position"] as? Int)?.toInt() ?: -1 in 0..8 }
         if (playerNpcs.isEmpty()) return null
         if (Random.nextFloat() > 0.30f) return null
         lastTriggerTurn = currentTurn
@@ -98,7 +98,7 @@ object AiSystem {
 
     private fun currentFormation(ctx: android.content.Context): String {
         val npcs = NpcManager.listForPlayer(ctx)
-            .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
+            .filter { (it["position"] as? Int)?.toInt() ?: -1 in 0..8 }
         if (npcs.isEmpty()) return "2 0 0|0 0 0|0 0 0"
         val firstId = npcs.first()["npc_id"] ?: 2
         return "$firstId 0 0|0 0 0|0 0 0"

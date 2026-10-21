@@ -47,8 +47,8 @@ class TaskAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: inflater.inflate(R.layout.item_task, parent, false)
         val item = items[position]
-        val taskId = (item["task_id"] as Long).toInt()
-        val status = (item["status"] as Long).toInt()
+        val taskId = (item["task_id"] as Int).toInt()
+        val status = (item["status"] as Int).toInt()
         val title = (item["title"] as? String) ?: "任务$taskId"
 
         val tpl = StaticData.getTaskTemplate(taskId)

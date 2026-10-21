@@ -13,7 +13,7 @@ object EquipManager {
         val cursor = db.rawQuery("SELECT * FROM c_equip", null)
         val list = mutableListOf<Map<String, Any>>()
         while (cursor.moveToNext()) {
-            val dbId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val dbId = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
             val equipId = cursor.getInt(cursor.getColumnIndexOrThrow("equip_id"))
             val upLevel = cursor.getInt(cursor.getColumnIndexOrThrow("up_level"))
             val status = cursor.getInt(cursor.getColumnIndexOrThrow("status"))

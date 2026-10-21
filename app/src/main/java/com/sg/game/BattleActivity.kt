@@ -57,12 +57,12 @@ class BattleActivity : AppCompatActivity() {
 
     private fun getPlayerFormation(): String {
         val npcs = NpcManager.listForPlayer(this)
-            .filter { (it["position"] as? Long)?.toInt() ?: -1 in 0..8 }
+            .filter { (it["position"] as? Int)?.toInt() ?: -1 in 0..8 }
         if (npcs.isEmpty()) return "2 0 0|0 0 0|0 0 0"
         val sb = StringBuilder()
         for (i in 0..2) for (j in 0..2) {
             val pos = i * 3 + j
-            val npc = npcs.firstOrNull { (it["position"] as? Long)?.toInt() == pos }
+            val npc = npcs.firstOrNull { (it["position"] as? Int)?.toInt() == pos }
             if (i > 0 || j > 0) sb.append(if (j == 0) "|" else ",")
             sb.append(npc?.get("npc_id") ?: 0)
         }
